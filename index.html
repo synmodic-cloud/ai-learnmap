@@ -24,28 +24,34 @@
   @keyframes drawin{0%{opacity:0;transform:translateX(30px);}100%{opacity:1;transform:none;}}
   @keyframes nodepulse{0%,100%{box-shadow:0 0 0 1px #D97757,0 0 22px #d9775744;}50%{box-shadow:0 0 0 1px #D97757,0 0 34px #d9775788;}}
   @keyframes floaty{0%{opacity:0;transform:translateY(14px) scale(.98);}100%{opacity:1;transform:none;}}
+  @media (max-width:680px){
+    [data-appheader]{flex-wrap:wrap;gap:9px;padding:9px 13px;}
+    [data-brandsub]{display:none;}
+    [data-appnav]{order:3;flex-basis:100%;width:100%;justify-content:flex-start;gap:6px;}
+    [data-mastery]{margin-left:auto;}
+  }
 </style>
 </helmet>
 
 <div onClick="{{ onRoot }}" style="font-family:'Noto Sans TC',system-ui,sans-serif;background:#1A1916;color:#ECEAE1;height:100vh;display:flex;flex-direction:column;overflow:hidden;">
 
   <!-- ============ TOP BAR ============ -->
-  <header style="flex:none;display:flex;align-items:center;gap:16px;padding:11px 20px;background:#181714;border-bottom:1px solid #3A372F;z-index:40;">
+  <header data-appheader style="flex:none;display:flex;align-items:center;gap:16px;padding:11px 20px;background:#181714;border-bottom:1px solid #3A372F;z-index:40;">
     <div style="display:flex;align-items:center;gap:11px;flex:none;">
       <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#D97757,#C8643F);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif TC',serif;font-weight:900;color:#1A1916;font-size:17px;">層</span>
       <div style="display:flex;flex-direction:column;line-height:1.15;">
         <span style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:15px;color:#F4F1E8;">系統地層</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;color:#6E6A60;">STRATA · LLM SYSTEMS · v16</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;color:#6E6A60;" data-brandsub>STRATA · LLM SYSTEMS · v16</span>
       </div>
     </div>
 
-    <nav style="flex:1;display:flex;gap:4px;justify-content:center;overflow-x:auto;" class="navscroll">
+    <nav data-appnav style="flex:1;display:flex;gap:4px;justify-content:center;overflow-x:auto;" class="navscroll">
       <sc-for list="{{ sceneTabs }}" as="tab" hint-placeholder-count="7">
         <span data-act="scene" data-id="{{ tab.id }}" style="flex:none;cursor:pointer;font-size:13px;padding:6px 14px;border-radius:8px;white-space:nowrap;letter-spacing:.04em;transition:all .15s;{{ tab.style }}">{{ tab.label }}</span>
       </sc-for>
     </nav>
 
-    <div data-act="scene" data-id="glossary" style="flex:none;display:flex;align-items:center;gap:9px;cursor:pointer;background:#111A2C;border:1px solid #3A372F;border-radius:20px;padding:5px 13px 5px 7px;">
+    <div data-act="scene" data-id="glossary" data-mastery style="flex:none;display:flex;align-items:center;gap:9px;cursor:pointer;background:#211F1B;border:1px solid #3A372F;border-radius:20px;padding:5px 13px 5px 7px;">
       <span style="position:relative;width:30px;height:30px;flex:none;">
         <svg viewBox="0 0 30 30" style="width:30px;height:30px;transform:rotate(-90deg);">
           <circle cx="15" cy="15" r="12" fill="none" stroke="#3A372F" stroke-width="3"></circle>
