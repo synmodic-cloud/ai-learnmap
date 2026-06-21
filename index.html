@@ -35,6 +35,16 @@
   @keyframes drawin{0%{opacity:0;transform:translateX(30px);}100%{opacity:1;transform:none;}}
   @keyframes nodepulse{0%,100%{box-shadow:0 0 0 1px #C9A55C,0 0 22px #c9a55c44;}50%{box-shadow:0 0 0 1px #C9A55C,0 0 34px #c9a55c88;}}
   @keyframes floaty{0%{opacity:0;transform:translateY(14px) scale(.98);}100%{opacity:1;transform:none;}}
+  /* interaction affordance: pointer hover + keyboard focus for every actionable element */
+  [data-act]{transition:filter .15s,transform .15s;}
+  [data-act]:hover{filter:brightness(1.08);}
+  [data-act="node"]:hover,[data-act="go"]:hover,[data-act="scene"]:hover{transform:translateY(-1px);}
+  [data-act]:focus-visible{outline:2px solid #C9A55C;outline-offset:2px;border-radius:6px;}
+  [data-act]:focus:not(:focus-visible){outline:none;}
+  /* respect reduced-motion: freeze decorative loops to their final state */
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001s !important;animation-iteration-count:1 !important;transition-duration:.05s !important;}
+  }
   @media (max-width:680px){
     /* readability: drop a dark veil behind the glass so panels refract near-black, not bright floral */
     [data-floralscrim]{background:rgba(11,9,7,.62) !important;}
@@ -169,8 +179,8 @@
           </sc-for>
         </div>
 
-        <div style="position:relative;width:100%;height:{{ canvasH }}px;margin:0 auto;overflow:hidden;max-width:1100px;">
-          <div style="position:absolute;left:50%;top:0;width:960px;margin-left:-480px;transform:scale({{ scale }});transform-origin:top center;">
+        <div style="width:100%;max-width:1100px;margin:0 auto;height:{{ canvasH }}px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;">
+          <div style="position:relative;width:960px;margin:0 auto;zoom:{{ scale }};">
             <!-- arrows -->
             <svg viewBox="0 0 960 600" style="position:absolute;inset:0;width:960px;height:600px;pointer-events:none;overflow:visible;">
               <defs>
@@ -266,8 +276,8 @@
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">三條路，把能力匯入推理核心</h1>
           <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">RAG 不改權重、只在推理時注入知識；微調與預訓練則改動模型本身。點任一塊，展開那條管線的全部節點。</p>
         </div>
-        <div style="position:relative;width:100%;height:{{ ladderH }}px;overflow:hidden;">
-          <div style="position:absolute;left:50%;top:0;width:760px;margin-left:-380px;transform:scale({{ ladderScale }});transform-origin:top center;">
+        <div style="width:100%;margin:0 auto;height:{{ ladderH }}px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;">
+          <div style="position:relative;width:760px;margin:0 auto;zoom:{{ ladderScale }};">
             <svg viewBox="0 0 760 430" style="position:absolute;inset:0;width:760px;height:430px;pointer-events:none;overflow:visible;">
               <defs><marker id="lk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8E8676"/></marker></defs>
               <path d="M210,83 C260,83 260,140 298,150" fill="none" stroke="#4A463E" stroke-width="2" marker-end="url(#lk)"/>
@@ -317,7 +327,7 @@
           <div style="display:flex;gap:18px;flex-wrap:wrap;">
             <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#8AA06A;">{{ summary.know }}</span><span style="font-size:11px;color:#8A857A;">懂</span></div>
             <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#D7A847;">{{ summary.review }}</span><span style="font-size:11px;color:#8A857A;">待覆習</span></div>
-            <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#C9A55C;">{{ summary.unsure }}</span><span style="font-size:11px;color:#8A857A;">未懂</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#C25A4E;">{{ summary.unsure }}</span><span style="font-size:11px;color:#8A857A;">未懂</span></div>
             <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#8E8676;">{{ summary.none }}</span><span style="font-size:11px;color:#8A857A;">未碰</span></div>
           </div>
         </div>
@@ -328,7 +338,7 @@
           </sc-for>
           <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8676;margin-left:auto;">{{ glSumText }}</span>
         </div>
-        <p style="font-size:11.5px;color:#8E8676;margin:0 0 14px;">圓點：灰=未碰 · 綠=懂 · 黃=待覆習 · 紅=未懂（點一下循環，會記住）</p>
+        <p style="font-size:11.5px;color:#8E8676;margin:0 0 14px;">圓點：空心=未碰 · ✓懂 · ～待覆習 · ?未懂（點一下循環，會記住）</p>
 
         <sc-for list="{{ glGroups }}" as="g" hint-placeholder-count="3">
           <div style="margin-top:18px;">
@@ -336,7 +346,7 @@
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:8px;">
               <sc-for list="{{ g.terms }}" as="tm" hint-placeholder-count="6">
                 <div style="display:flex;align-items:flex-start;gap:9px;border:1px solid #45423B;border-radius:8px;padding:9px 11px;background:rgba(40,36,31,.42);backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);">
-                  <span data-act="dot" data-id="{{ tm.id }}" style="flex:none;width:15px;height:15px;border-radius:50%;cursor:pointer;margin-top:2px;{{ tm.dotStyle }}"></span>
+                  <span data-act="dot" data-id="{{ tm.id }}" style="flex:none;width:15px;height:15px;border-radius:50%;cursor:pointer;margin-top:2px;{{ tm.dotStyle }}">{{ tm.glyph }}</span>
                   <span style="flex:1;min-width:0;">
                     <span data-act="go" data-id="{{ tm.go }}" style="font-size:13px;color:#D8D3C6;cursor:pointer;font-weight:600;display:block;">{{ tm.t }}</span>
                     <span style="font-size:11.5px;color:#8A857A;line-height:1.5;display:block;margin-top:2px;">{{ tm.d }}</span>
@@ -1676,9 +1686,18 @@ class Component extends DCLogic {
       this.nodeTerms.push({t:m.n+" "+m.name+(m.en?" · "+m.en:""), d:this.strip(m.data), go});
       (m.tools||[]).forEach(tl=> this.toolTerms.push({t:tl.t, d:this.strip(tl.d), go}));
     });});
-    let idc=0; const tag=arr=>arr.forEach(x=>x.id="g"+(idc++));
-    tag(this.nodeTerms); tag(this.CONCEPTS); tag(this.toolTerms);
+    // Stable mastery ids: derive from content, not position, so inserting/reordering a
+    // term no longer shifts every later id (which used to force a KEY bump that wiped progress).
+    // this._oldIdMap records the legacy positional g# -> stable id for a one-time migration on load.
+    const _slug=s=>String(s).trim().replace(/\s+/g,"-").replace(/[^\w㐀-鿿-]/g,"").slice(0,40);
+    let _oi=0; this._oldIdMap={};
+    const tag=(arr,pfx,disc)=>arr.forEach(x=>{ x.id=pfx+disc(x); this._oldIdMap["g"+(_oi++)]=x.id; });
+    tag(this.nodeTerms,"n#",x=>x.go);                  // one node per card -> go is unique
+    tag(this.CONCEPTS,"c#",x=>_slug(x.t));             // concept name is the stable key
+    tag(this.toolTerms,"t#",x=>x.go+"#"+_slug(x.t));   // tool name unique within its card
     this.ALL=this.nodeTerms.concat(this.CONCEPTS).concat(this.toolTerms);
+    // dev guard: a stable-id collision would silently merge two terms' mastery
+    try{ const _seen={}; this.ALL.forEach(x=>{ if(_seen[x.id]) console.warn("[cov] duplicate id",x.id,x.t); _seen[x.id]=1; }); }catch(e){}
     this.cardTerms={};
     this.nodeTerms.forEach(x=>(this.cardTerms[x.go]=this.cardTerms[x.go]||[]).push(x.id));
     this.CONCEPTS.forEach(x=>(this.cardTerms[x.go]=this.cardTerms[x.go]||[]).push(x.id));
@@ -1712,7 +1731,7 @@ class Component extends DCLogic {
       "後端 / 編排層":"Backend / Orchestrator","載入與解析":"Load & parse","嵌入":"Embedding","寫入向量庫":"Write to vector DB","查詢嵌入":"Query embedding","檢索 + 重排":"Retrieve + rerank","組裝 Prompt":"Assemble Prompt","推理服務 / MaaS":"LLM serving / MaaS","後處理 / 守門":"Post-process / gate","日誌 / 可觀測性":"Logs / observability","資料準備":"Data prep","訓練":"Training","評估":"Evaluation","部署":"Deploy","語料準備":"Corpus prep","產出":"Output",
       "後端 / 離線":"Backend / offline","模型服務 GPU":"Model serving GPU","數據庫 + 儲存":"DB + storage","後端":"Backend","模型服務":"Model serving","數據庫 + 後端":"DB + backend","模型服務 GPU 叢集":"Model serving GPU cluster","儲存":"Storage",
       "把機密語料變成可被搜尋的記憶——離線建立一次，不動模型權重。":"Turn the sensitive corpus into searchable memory — built offline once, weights untouched.","每次提問背後，後端如何在毫秒間檢索、組裝、生成並守門。":"Behind each question: how the backend retrieves, assembles, generates and gatekeeps in milliseconds.","用示範把行為烙進權重，讓模型不必每次靠提示。":"Burn behavior into the weights with demos, so the model needn't lean on prompts.","拿海量語料重塑模型的底層直覺——最貴、最深、企業極少碰。":"Reshape the model's base intuition with massive corpora — costliest, deepest, rarely done.",
-      "RAG 不改權重、只在推理時注入知識；微調與預訓練則改動模型本身。點任一塊，展開那條管線的全部節點。":"RAG changes no weights — it injects knowledge at inference; fine-tuning and pretraining change the model itself. Click a block to expand that pipeline's nodes.","這三站把地圖上最核心的機制鑽到數學與工程的底。點開細讀。":"These three drill the map's core mechanisms down to the math and engineering. Tap to read.","RAG 是單次「檢索→生成」；代理是它的超集——一個會循環的系統。":"RAG is a one-shot retrieve→generate; agents are its superset — a looping system.","在哪、會不會越界、誰能碰、留多久——套在系統圖的每個資料落點上逐一問一遍。":"Where, does it cross a boundary, who can touch it, how long it stays — ask at every data site on the map.","八個關鍵概念，補上這張地圖的最新一層。點任一張細讀。":"Eight key ideas — the map's newest layer. Tap any card to read.","這張地圖的骨幹是經典範式；這一節補上 2026 的關鍵演化。":"The map's backbone is the classic paradigm; this section adds 2026's key evolution.","圓點：灰=未碰 · 綠=懂 · 黃=待覆習 · 紅=未懂（點一下循環，會記住）":"Dots: grey=untouched · green=got it · yellow=review · red=unsure (tap to cycle; remembered).",
+      "RAG 不改權重、只在推理時注入知識；微調與預訓練則改動模型本身。點任一塊，展開那條管線的全部節點。":"RAG changes no weights — it injects knowledge at inference; fine-tuning and pretraining change the model itself. Click a block to expand that pipeline's nodes.","這三站把地圖上最核心的機制鑽到數學與工程的底。點開細讀。":"These three drill the map's core mechanisms down to the math and engineering. Tap to read.","RAG 是單次「檢索→生成」；代理是它的超集——一個會循環的系統。":"RAG is a one-shot retrieve→generate; agents are its superset — a looping system.","在哪、會不會越界、誰能碰、留多久——套在系統圖的每個資料落點上逐一問一遍。":"Where, does it cross a boundary, who can touch it, how long it stays — ask at every data site on the map.","八個關鍵概念，補上這張地圖的最新一層。點任一張細讀。":"Eight key ideas — the map's newest layer. Tap any card to read.","這張地圖的骨幹是經典範式；這一節補上 2026 的關鍵演化。":"The map's backbone is the classic paradigm; this section adds 2026's key evolution.","圓點：空心=未碰 · ✓懂 · ～待覆習 · ?未懂（點一下循環，會記住）":"Dots: ○ untouched · ✓ got it · ～ review · ? unsure (tap to cycle; remembered).",
       "前端 → 後端：用戶問題":"Frontend → backend: the question","後端 → 嵌入：查詢文字":"Backend → embed: query text","嵌入 → 向量庫：查詢向量":"Embed → vector DB: query vector","向量庫 → 後端：top-k 原文塊":"Vector DB → backend: top-k chunks","後端 → LLM：完整 Prompt":"Backend → LLM: full Prompt","LLM → 後端：生成的答案":"LLM → backend: the answer","後端 → 前端：答案 + 引用":"Backend → frontend: answer + citation","後端 → 日誌：記錄":"Backend → logs: record",
       "離線①　建索引：文件 → 解析 → 切塊 → 嵌入":"Offline ①  Build index: docs → parse → chunk → embed","離線②　向量 + 原文寫入向量庫（建一次、重複用）":"Offline ②  Write vectors + source to the DB (build once, reuse)","線上①　問題 → 嵌入成查詢向量":"Online ①  Question → embed into a query vector","線上②　查詢向量去向量庫找最近鄰":"Online ②  Query vector → nearest neighbors in the DB","線上③　取回 top-k 原文塊":"Online ③  Retrieve the top-k chunks","線上④　檢索塊塞進 Prompt → LLM 生成":"Online ④  Stuff chunks into the Prompt → LLM generates","線上⑤　帶來源的答案回到前端":"Online ⑤  Cited answer back to the frontend",
       "① 用戶問題進入編排層":"① The question enters the orchestrator","② 組好 Prompt → LLM（prefill：一次並行讀入整段）":"② Assemble Prompt → LLM (prefill: whole prompt in parallel)","③ decode：逐字生成，每個新字重用 KV cache":"③ decode: token by token, each reuses the KV cache","④ 生成完的答案回到編排層":"④ The finished answer returns to the orchestrator","⑤ 後處理 + 加引用 → 回前端":"⑤ Post-process + cite → back to the frontend",
@@ -1731,10 +1750,13 @@ class Component extends DCLogic {
   }
 
   componentDidMount(){
-    try{ const r=localStorage.getItem(this.KEY); if(r) this.setState({cov:JSON.parse(r)||{}}); }catch(e){}
+    try{ const r=localStorage.getItem(this.KEY); if(r){ let cov=JSON.parse(r)||{};
+      if(Object.keys(cov).some(k=>/^g\d+$/.test(k))){ const m={}; for(const k in cov){ m[this._oldIdMap[k]||k]=cov[k]; } cov=m; this.save(cov); }
+      this.setState({cov}); } }catch(e){}
     const fit=()=>{ const st=document.querySelector("[data-stage]");
       const w=(st&&st.clientWidth)||window.innerWidth||960;
-      const sc=Math.max(.3,Math.min(1,(w-24)/960)), ls=Math.max(.32,Math.min(1,(w-24)/760));
+      const mob=w<680, fO=mob?.6:.3, fL=mob?.6:.32; // mobile: hold a readable floor; canvas scrolls horizontally
+      const sc=Math.max(fO,Math.min(1,(w-24)/960)), ls=Math.max(fL,Math.min(1,(w-24)/760));
       if(sc!==this.state.scale||ls!==this.state.ladderScale) this.setState({scale:sc, ladderScale:ls}); };
     this._fit=fit; fit();
     // mobile top-nav: keep the active tab scrolled into view so the row never opens mid-tab
@@ -1976,11 +1998,13 @@ class Component extends DCLogic {
     const dwNext=(s2&&this.NEXT[s2])?{go:this.NEXT[s2][0],label:this.NEXT[s2][1]}:null;
 
     const f=this.state.gfilter;
-    const dotFor=st=> st==="know"?"background:#4F7A4A;border:2px solid #4F7A4A;":
-      st==="review"?"background:#C99A2E;border:2px solid #C99A2E;":
-      st==="unsure"?"background:#9E4035;border:2px solid #9E4035;":"background:transparent;border:2px solid #45423B;";
+    const dotC="display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;line-height:1;color:#1A1916;";
+    const dotFor=st=> st==="know"?dotC+"background:#6B9A63;border:2px solid #6B9A63;":
+      st==="review"?dotC+"background:#D2A33C;border:2px solid #D2A33C;":
+      st==="unsure"?dotC+"background:#C25A4E;border:2px solid #C25A4E;":dotC+"background:transparent;border:2px solid #45423B;";
+    const glyphFor=st=> st==="know"?"✓":st==="review"?"~":st==="unsure"?"?":"";
     const mkTerms=arr=>arr.filter(x=>{const st=cov[x.id]||"";return f==="all"||st===f;})
-      .map(x=>({id:x.id,t:x.t,d:x.d,go:x.go,dotStyle:dotFor(cov[x.id]||"")}));
+      .map(x=>({id:x.id,t:x.t,d:x.d,go:x.go,dotStyle:dotFor(cov[x.id]||""),glyph:glyphFor(cov[x.id]||"")}));
     const rawG=[["節點 Nodes",this.nodeTerms],["概念 Concepts",this.CONCEPTS],["工具 Tools",this.toolTerms]];
     const glGroups=rawG.map(g=>({name:g[0],count:mkTerms(g[1]).length,terms:mkTerms(g[1])})).filter(g=>g.count>0);
     const fbs=[["all","全部"],["","未碰"],["know","懂"],["review","待覆習"],["unsure","未懂"]];
