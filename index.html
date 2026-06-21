@@ -36,13 +36,14 @@
   @keyframes nodepulse{0%,100%{box-shadow:0 0 0 1px #C9A55C,0 0 22px #c9a55c44;}50%{box-shadow:0 0 0 1px #C9A55C,0 0 34px #c9a55c88;}}
   @keyframes floaty{0%{opacity:0;transform:translateY(14px) scale(.98);}100%{opacity:1;transform:none;}}
   @media (max-width:680px){
+    /* readability: drop a dark veil behind the glass so panels refract near-black, not bright floral */
+    [data-floralscrim]{background:rgba(11,9,7,.62) !important;}
     [data-appheader]{flex-wrap:wrap;gap:9px;padding:9px 13px;}
     [data-brandsub]{display:none;}
-    [data-appnav]{order:3;flex-basis:100%;width:100%;justify-content:flex-start;gap:6px;-webkit-mask-image:linear-gradient(90deg,#000 84%,transparent);mask-image:linear-gradient(90deg,#000 84%,transparent);scroll-snap-type:x proximity;padding-right:26px;}
-    [data-appnav] span{scroll-snap-align:start;}
-    [data-appnav] span[data-act="scene"]{font-size:12.5px;padding:6px 11px;}
+    [data-appnav]{order:3;flex-basis:100%;width:100%;justify-content:flex-start;gap:7px;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);scroll-snap-type:x proximity;padding:2px 30px 2px 0;}
+    [data-appnav] span[data-act="scene"]{scroll-snap-align:start;font-size:13.5px;padding:8px 13px;flex:none;}
     [data-mastery]{margin-left:auto;}
-    [data-navmore]{display:flex !important;position:absolute;right:10px;bottom:9px;animation:navnudge 1.5s ease-in-out infinite;}
+    [data-navmore]{display:none !important;}
   }
 </style>
 </helmet>
@@ -54,6 +55,7 @@
     <div style="position:absolute;inset:0;background:url('assets/bloom-dark.jpg') center top/cover no-repeat;filter:saturate(.9) brightness(.46) contrast(1.03);opacity:.55;animation:breathe 44s ease-in-out infinite;"></div>
     <div style="position:absolute;right:-150px;top:-90px;width:min(720px,50vw);height:min(820px,86vh);background:url('assets/bloom-dark.jpg') 66% 14%/cover no-repeat;filter:saturate(.98) brightness(.82);opacity:.42;-webkit-mask-image:radial-gradient(60% 56% at 70% 34%,#000 2%,transparent 72%);mask-image:radial-gradient(60% 56% at 70% 34%,#000 2%,transparent 72%);animation:breathe 31s ease-in-out infinite;"></div>
     <div style="position:absolute;inset:0;background:radial-gradient(130% 108% at 50% 2%,rgba(18,16,13,.26) 0%,rgba(15,13,11,.56) 50%,rgba(11,10,8,.9) 100%);"></div>
+    <div data-floralscrim style="position:absolute;inset:0;background:transparent;transition:background .3s;"></div>
   </div>
 
 
@@ -75,7 +77,7 @@
         <span data-act="scene" data-id="{{ tab.id }}" style="flex:none;cursor:pointer;font-size:13px;padding:6px 14px;border-radius:8px;white-space:nowrap;letter-spacing:.04em;transition:all .15s;{{ tab.style }}">{{ tab.label }}</span>
       </sc-for>
     </nav>
-    <span data-navmore aria-hidden="true" style="display:none;cursor:pointer;align-items:center;justify-content:center;width:27px;height:27px;border-radius:50%;background:rgba(38,33,26,.72);backdrop-filter:blur(10px) saturate(1.3);-webkit-backdrop-filter:blur(10px) saturate(1.3);border:1px solid rgba(207,160,92,.55);color:#E6CD8C;font-size:16px;line-height:1;box-shadow:0 2px 9px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,246,224,.25);transition:opacity .25s;z-index:42;">›</span>
+
 
     <div style="flex:none;display:flex;align-items:center;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:18px;padding:2px;margin-right:2px;">
       <sc-for list="{{ langBtns }}" as="lg" hint-placeholder-count="3">
@@ -91,7 +93,7 @@
       </span>
       <div style="display:flex;flex-direction:column;line-height:1.1;">
         <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:#F4F1E8;">{{ summary.pct }}%</span>
-        <span style="font-size:9px;letter-spacing:.1em;color:#6E6A60;">掌握度</span>
+        <span style="font-size:9px;letter-spacing:.1em;color:#8E8676;">掌握度</span>
       </div>
     </div>
   </header>
@@ -131,7 +133,7 @@
           <div>
             <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 01 · 查詢推理核心</div>
             <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">系統怎麼把一個問題，變成一句帶引用的答案</h1>
-            <p style="font-size:13.5px;color:#9C988C;margin:7px 0 0;max-width:620px;line-height:1.65;">點任一個節點看它在做什麼；或按 <b style="color:#C9A55C;">播放</b>，看一個真實的查詢沿著系統流動。</p>
+            <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:620px;line-height:1.65;">點任一個節點看它在做什麼；或按 <b style="color:#C9A55C;">播放</b>，看一個真實的查詢沿著系統流動。</p>
           </div>
           <div style="display:flex;gap:9px;flex:none;">
             <span data-act="{{ playBtnAct }}" style="cursor:pointer;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(206,170,96,.92),rgba(150,116,48,.85));backdrop-filter:blur(10px) saturate(1.15);-webkit-backdrop-filter:blur(10px) saturate(1.15);color:#241A08;font-weight:700;font-size:13.5px;padding:11px 19px;border-radius:9px;border:1px solid rgba(230,210,160,.5);box-shadow:0 7px 22px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,246,224,.45);">{{ playBtnLabel }}</span>
@@ -140,28 +142,28 @@
         </div>
 
         <div style="max-width:980px;margin:0 auto 12px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#6E6A60;margin-bottom:7px;">請求的旅程 · 主軸 · 點任一站</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#8E8676;margin-bottom:7px;">請求的旅程 · 主軸 · 點任一站</div>
           <div style="display:flex;align-items:center;gap:2px;overflow-x:auto;padding-bottom:3px;" class="navscroll">
             <span data-act="stage" data-node="client" data-card="mod-query-0" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❶ 接收問題</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="embed" data-card="mod-query-2" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❷ 嵌入理解</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="vdb" data-card="mod-query-3" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❸ 檢索</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="backend" data-card="mod-query-4" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❹ 組裝 Prompt</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="llm" data-card="mod-query-5" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❺ 生成</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="backend" data-card="mod-query-6" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❻ 守門</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="client" data-card="mod-query-0" style="flex:none;cursor:pointer;background:rgba(40,36,30,.4);backdrop-filter:blur(13px) saturate(1.3);-webkit-backdrop-filter:blur(13px) saturate(1.3);border:1px solid rgba(222,205,160,.16);box-shadow:inset 0 1px 0 rgba(255,248,232,.12);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#ECEAE1;white-space:nowrap;">❼ 回應引用</span>
-            <span style="flex:none;color:#6E6A60;font-size:13px;padding:0 3px;">›</span>
+            <span style="flex:none;color:#8E8676;font-size:13px;padding:0 3px;">›</span>
             <span data-act="stage" data-node="log" data-card="mod-query-7" style="flex:none;cursor:pointer;background:rgba(40,34,26,.42);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(201,166,92,.3);border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:600;color:#E9C9A8;white-space:nowrap;">❽ 記錄</span>
           </div>
         </div>
 
         <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center;max-width:980px;margin:0 auto 12px;">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#6E6A60;margin-right:2px;">在哪發生</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#8E8676;margin-right:2px;">在哪發生</span>
           <sc-for list="{{ lensChips }}" as="lc" hint-placeholder-count="7">
             <span data-act="lens" data-id="{{ lc.id }}" style="cursor:pointer;font-size:12px;padding:5px 12px;border-radius:13px;white-space:nowrap;transition:all .15s;{{ lc.style }}">{{ lc.label }}</span>
           </sc-for>
@@ -172,7 +174,7 @@
             <!-- arrows -->
             <svg viewBox="0 0 960 600" style="position:absolute;inset:0;width:960px;height:600px;pointer-events:none;overflow:visible;">
               <defs>
-                <marker id="mk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6E6A60"/></marker>
+                <marker id="mk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8E8676"/></marker>
                 <marker id="mkA" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C9A55C"/></marker>
               </defs>
               <!-- offline -->
@@ -262,12 +264,12 @@
         <div style="margin-bottom:18px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 02 · 適應階梯</div>
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">三條路，把能力匯入推理核心</h1>
-          <p style="font-size:13.5px;color:#9C988C;margin:7px 0 0;max-width:640px;line-height:1.65;">RAG 不改權重、只在推理時注入知識；微調與預訓練則改動模型本身。點任一塊，展開那條管線的全部節點。</p>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">RAG 不改權重、只在推理時注入知識；微調與預訓練則改動模型本身。點任一塊，展開那條管線的全部節點。</p>
         </div>
         <div style="position:relative;width:100%;height:{{ ladderH }}px;overflow:hidden;">
           <div style="position:absolute;left:50%;top:0;width:760px;margin-left:-380px;transform:scale({{ ladderScale }});transform-origin:top center;">
             <svg viewBox="0 0 760 430" style="position:absolute;inset:0;width:760px;height:430px;pointer-events:none;overflow:visible;">
-              <defs><marker id="lk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6E6A60"/></marker></defs>
+              <defs><marker id="lk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8E8676"/></marker></defs>
               <path d="M210,83 C260,83 260,140 298,150" fill="none" stroke="#4A463E" stroke-width="2" marker-end="url(#lk)"/>
               <path d="M210,218 C260,218 260,175 298,165" fill="none" stroke="#4A463E" stroke-width="2" marker-end="url(#lk)"/>
               <line x1="460" y1="155" x2="538" y2="155" stroke="#4A463E" stroke-width="2" marker-end="url(#lk)"/>
@@ -309,14 +311,14 @@
               <circle cx="48" cy="48" r="40" fill="none" stroke="#8AA06A" stroke-width="8" stroke-linecap="round" stroke-dasharray="{{ ringB.c }}" stroke-dashoffset="{{ ringB.offset }}" style="transition:stroke-dashoffset .5s;"></circle>
             </svg>
             <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-              <span style="font-family:'Noto Serif TC',serif;font-weight:900;font-size:26px;color:#F4F1E8;line-height:1;">{{ summary.pct }}<span style="font-size:13px;color:#6E6A60;">%</span></span>
+              <span style="font-family:'Noto Serif TC',serif;font-weight:900;font-size:26px;color:#F4F1E8;line-height:1;">{{ summary.pct }}<span style="font-size:13px;color:#8E8676;">%</span></span>
             </div>
           </div>
           <div style="display:flex;gap:18px;flex-wrap:wrap;">
             <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#8AA06A;">{{ summary.know }}</span><span style="font-size:11px;color:#8A857A;">懂</span></div>
             <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#D7A847;">{{ summary.review }}</span><span style="font-size:11px;color:#8A857A;">待覆習</span></div>
             <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#C9A55C;">{{ summary.unsure }}</span><span style="font-size:11px;color:#8A857A;">未懂</span></div>
-            <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#6E6A60;">{{ summary.none }}</span><span style="font-size:11px;color:#8A857A;">未碰</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:#8E8676;">{{ summary.none }}</span><span style="font-size:11px;color:#8A857A;">未碰</span></div>
           </div>
         </div>
 
@@ -324,13 +326,13 @@
           <sc-for list="{{ filterBtns }}" as="fb" hint-placeholder-count="5">
             <span data-act="filter" data-id="{{ fb.id }}" style="font-size:12px;cursor:pointer;padding:5px 13px;border-radius:13px;white-space:nowrap;{{ fb.style }}">{{ fb.label }}</span>
           </sc-for>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6E6A60;margin-left:auto;">{{ glSumText }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8676;margin-left:auto;">{{ glSumText }}</span>
         </div>
-        <p style="font-size:11.5px;color:#6E6A60;margin:0 0 14px;">圓點：灰=未碰 · 綠=懂 · 黃=待覆習 · 紅=未懂（點一下循環，會記住）</p>
+        <p style="font-size:11.5px;color:#8E8676;margin:0 0 14px;">圓點：灰=未碰 · 綠=懂 · 黃=待覆習 · 紅=未懂（點一下循環，會記住）</p>
 
         <sc-for list="{{ glGroups }}" as="g" hint-placeholder-count="3">
           <div style="margin-top:18px;">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#9C988C;margin:0 0 9px;letter-spacing:.05em;">{{ g.name }} · {{ g.count }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#B6AE9D;margin:0 0 9px;letter-spacing:.05em;">{{ g.name }} · {{ g.count }}</div>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:8px;">
               <sc-for list="{{ g.terms }}" as="tm" hint-placeholder-count="6">
                 <div style="display:flex;align-items:flex-start;gap:9px;border:1px solid #45423B;border-radius:8px;padding:9px 11px;background:rgba(40,36,31,.42);backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);">
@@ -353,25 +355,25 @@
         <div style="margin-bottom:18px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 03 · 深入專題</div>
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">挑出最關鍵的節點，一路鑽到底</h1>
-          <p style="font-size:13.5px;color:#9C988C;margin:7px 0 0;max-width:640px;line-height:1.65;">這三站把地圖上最核心的機制鑽到數學與工程的底。點開細讀。</p>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">這三站把地圖上最核心的機制鑽到數學與工程的底。點開細讀。</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
           <div data-act="go" data-id="deep-embed" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:13px;padding:20px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1A1916;background:#C9A55C;border-radius:4px;padding:2px 9px;">T1</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;">Embedding</span></div>
             <div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#F4F1E8;line-height:1.4;">嵌入：語意如何變成數字</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:9px 0 0;">語意如何變成高維空間裡的一個點，而「相近」就是「靠近」。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">語意如何變成高維空間裡的一個點，而「相近」就是「靠近」。</p>
             <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
           </div>
           <div data-act="go" data-id="deep-retrieval" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:13px;padding:20px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1A1916;background:#C9A55C;border-radius:4px;padding:2px 9px;">T2</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;">Retrieval</span></div>
             <div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#F4F1E8;line-height:1.4;">檢索：相近怎麼量、百萬條怎麼快找</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:9px 0 0;">餘弦相似度的幾何，加上 ANN 如何用一點準確度換幾百倍速度。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">餘弦相似度的幾何，加上 ANN 如何用一點準確度換幾百倍速度。</p>
             <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
           </div>
           <div data-act="go" data-id="deep-infer" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:13px;padding:20px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1A1916;background:#C9A55C;border-radius:4px;padding:2px 9px;">T3</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;">LLM Serving</span></div>
             <div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#F4F1E8;line-height:1.4;">推理服務：逐字生成與 KV cache</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:9px 0 0;">prefill 與 decode 的成本差，以及 KV cache 為何能省下巨量重算。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">prefill 與 decode 的成本差，以及 KV cache 為何能省下巨量重算。</p>
             <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
           </div>
         </div>
@@ -384,7 +386,7 @@
         <div style="margin-bottom:18px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 04 · 代理層 Agents</div>
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">當模型開始自己思考、用工具、分多步完成任務</h1>
-          <p style="font-size:13.5px;color:#9C988C;margin:7px 0 0;max-width:640px;line-height:1.65;">RAG 是單次「檢索→生成」；代理是它的超集——一個會循環的系統。</p>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">RAG 是單次「檢索→生成」；代理是它的超集——一個會循環的系統。</p>
         </div>
         <div style="background:rgba(42,38,34,.5);backdrop-filter:blur(17px) saturate(1.2);-webkit-backdrop-filter:blur(17px) saturate(1.2);color:#D8D4C8;border-radius:14px;padding:24px 26px;box-shadow:0 18px 50px #00000044;">
           <sc-if value="{{ notEn }}" hint-placeholder-val="{{ true }}">
@@ -407,15 +409,15 @@
             <text x="280" y="271" font-size="12.5" fill="#ECEAE1" text-anchor="middle">工具 Tools</text>
             <text x="280" y="289" font-size="9.5" fill="#8A857A" text-anchor="middle">檢索/RAG · 計算 · MCP 工具…</text>
             <line x1="350" y1="122" x2="350" y2="248" stroke="#7A756A" marker-end="url(#ar)"/>
-            <text x="358" y="180" font-size="10" fill="#B0AB9C">② 行動 Act</text><text x="358" y="193" font-size="9" fill="#8A857A">{tool, args}</text>
+            <text x="358" y="180" font-size="10" fill="#C4BCAB">② 行動 Act</text><text x="358" y="193" font-size="9" fill="#8A857A">{tool, args}</text>
             <line x1="210" y1="248" x2="210" y2="124" stroke="#7A756A" marker-end="url(#ar)"/>
-            <text x="100" y="180" font-size="10" fill="#B0AB9C">③ 觀察 Observe</text><text x="118" y="193" font-size="9" fill="#8A857A">結果回傳</text>
+            <text x="100" y="180" font-size="10" fill="#C4BCAB">③ 觀察 Observe</text><text x="118" y="193" font-size="9" fill="#8A857A">結果回傳</text>
             <text x="280" y="195" font-size="10" fill="#C9A55C" text-anchor="middle">↻ 重複直到完成</text>
             <line x1="370" y1="97" x2="468" y2="97" stroke="#7A756A" marker-end="url(#ar)"/>
             <text x="474" y="93" font-size="10.5" fill="#ECEAE1">完成 →</text><text x="474" y="108" font-size="10.5" fill="#ECEAE1" font-weight="bold">最終答案</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:0 0 16px;">harness 撐起這個迴圈；模型是腦，工具是手，觀察結果再餵回。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:0 0 16px;">harness 撐起這個迴圈；模型是腦，工具是手，觀察結果再餵回。</p>
           <p style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">工具呼叫 / Function Calling。</b>模型怎麼「行動」？它輸出一個結構化請求(例 {"tool":"search_policy","args":{"q":"大額現金門檻"}})，由 harness 執行、把結果回傳。模型自己不跑程式，只發出請求。</p>
           <p style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">MCP(Model Context Protocol)。</b>一個開放標準，讓任何工具/資料源用同一種接口接上任何代理——工具界的「USB 插口」，不必為每個工具寫膠水程式。</p>
           <p style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">skill。</b>打包好的能力：一個有名字、可重用的「提示 + 工具 + 步驟」組合(例：一個『合規查詢 skill』綁好對的提示和政策搜尋工具)。</p>
@@ -441,15 +443,15 @@
             <text x="280" y="271" font-size="12.5" fill="#ECEAE1" text-anchor="middle">Tools</text>
             <text x="280" y="289" font-size="9.5" fill="#8A857A" text-anchor="middle">retrieval/RAG · compute · MCP tools…</text>
             <line x1="350" y1="122" x2="350" y2="248" stroke="#7A756A" marker-end="url(#are)"/>
-            <text x="358" y="180" font-size="10" fill="#B0AB9C">② Act</text><text x="358" y="193" font-size="9" fill="#8A857A">{tool, args}</text>
+            <text x="358" y="180" font-size="10" fill="#C4BCAB">② Act</text><text x="358" y="193" font-size="9" fill="#8A857A">{tool, args}</text>
             <line x1="210" y1="248" x2="210" y2="124" stroke="#7A756A" marker-end="url(#are)"/>
-            <text x="100" y="180" font-size="10" fill="#B0AB9C">③ Observe</text><text x="112" y="193" font-size="9" fill="#8A857A">result back</text>
+            <text x="100" y="180" font-size="10" fill="#C4BCAB">③ Observe</text><text x="112" y="193" font-size="9" fill="#8A857A">result back</text>
             <text x="280" y="195" font-size="10" fill="#C9A55C" text-anchor="middle">↻ repeat until done</text>
             <line x1="370" y1="97" x2="468" y2="97" stroke="#7A756A" marker-end="url(#are)"/>
             <text x="474" y="93" font-size="10.5" fill="#ECEAE1">Done →</text><text x="474" y="108" font-size="10.5" fill="#ECEAE1" font-weight="bold">final answer</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:0 0 16px;">The harness holds up the loop; the model is the brain, tools are the hands, results are fed back in.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:0 0 16px;">The harness holds up the loop; the model is the brain, tools are the hands, results are fed back in.</p>
           <p style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">Tool calls / Function calling.</b> How does the model “act”? It emits a structured request (e.g. {"tool":"search_policy","args":{"q":"large-cash threshold"}}), the harness runs it and feeds the result back. The model never runs code itself — it only issues requests.</p>
           <p style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">MCP (Model Context Protocol).</b> An open standard that lets any tool/data source connect to any agent through one interface — the “USB port” of tools, so you don't write glue code for each one.</p>
           <p style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">skill.</b> A packaged capability: a named, reusable bundle of “prompt + tools + steps” (e.g. a “compliance-lookup skill” wiring the right prompt to a policy-search tool).</p>
@@ -466,7 +468,7 @@
         <div style="margin-bottom:18px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 05 · 合規視角</div>
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">四個切面，追問機密資料的去向</h1>
-          <p style="font-size:13.5px;color:#9C988C;margin:7px 0 0;max-width:640px;line-height:1.65;">在哪、會不會越界、誰能碰、留多久——套在系統圖的每個資料落點上逐一問一遍。</p>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">在哪、會不會越界、誰能碰、留多久——套在系統圖的每個資料落點上逐一問一遍。</p>
         </div>
         <sc-if value="{{ notEn }}" hint-placeholder-val="{{ true }}">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
@@ -540,43 +542,43 @@
         <div style="margin-bottom:18px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 06 · 前沿 2026</div>
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">經典範式之外，2026 真正在發生的演化</h1>
-          <p style="font-size:13.5px;color:#9C988C;margin:7px 0 0;max-width:640px;line-height:1.65;">八個關鍵概念，補上這張地圖的最新一層。點任一張細讀。</p>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">八個關鍵概念，補上這張地圖的最新一層。點任一張細讀。</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px;">
           <div data-act="go" data-id="frontier-reason" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">Reasoning</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">推理模型 / 推理時運算</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">先想再答，用推理時的算力換準確度。2026 最大的轉變。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">先想再答，用推理時的算力換準確度。2026 最大的轉變。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
           <div data-act="go" data-id="frontier-arag" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">Agentic RAG</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">代理式檢索 + 脈絡工程</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">檢索變成 agent 會呼叫的工具，多輪逼近答案。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">檢索變成 agent 會呼叫的工具，多輪逼近答案。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
           <div data-act="go" data-id="frontier-pref" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">Preference Tuning</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">偏好微調：RLHF / DPO</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">教模型「人類較喜歡哪個答案」——你改行為管線缺的另一半。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">教模型「人類較喜歡哪個答案」——你改行為管線缺的另一半。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
           <div data-act="go" data-id="frontier-moe" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">MoE</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">混合專家架構</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">每個 token 只激活幾個專家——又大又便宜。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">每個 token 只激活幾個專家——又大又便宜。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
           <div data-act="go" data-id="frontier-infra" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">Inference Opt</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">推理優化：快取 + 推測解碼</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">提示快取 + 推測解碼，把變貴的推理拉回便宜又快。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">提示快取 + 推測解碼，把變貴的推理拉回便宜又快。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
           <div data-act="go" data-id="frontier-multiagent" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">Multi-agent · Memory</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">多代理 + 記憶</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">主管分派、多 worker 協作，加上長短期記憶。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">主管分派、多 worker 協作，加上長短期記憶。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
           <div data-act="go" data-id="frontier-security" style="cursor:pointer;background:linear-gradient(160deg,rgba(58,38,33,.5),rgba(40,26,22,.42));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(176,92,80,.3);border-radius:12px;padding:18px;transition:all .18s;">
@@ -588,7 +590,7 @@
           <div data-act="go" data-id="frontier-eval" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:12px;padding:18px;transition:all .18s;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;"><span style="color:#C99A6B;">◆</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A857A;">Evaluation</span></div>
             <div style="font-size:16px;font-weight:700;color:#F4F1E8;">評估：RAGAS + LLM-as-Judge</div>
-            <p style="font-size:12.5px;color:#9C988C;line-height:1.7;margin:8px 0 0;">怎麼知道它對、它在哪裡崩——applied 的命門。</p>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">怎麼知道它對、它在哪裡崩——applied 的命門。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
         </div>
@@ -608,10 +610,10 @@
           <div style="flex:1;min-width:0;">
             <sc-if value="{{ dwTag }}" hint-placeholder-val="{{ false }}"><span style="font-size:10.5px;letter-spacing:.05em;font-weight:600;color:#fff;border-radius:3px;padding:2px 9px;background:{{ dwTagBg }};">{{ dwTag }}</span></sc-if>
             <div style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:19px;color:#F2EFE6;margin-top:5px;">{{ dwTitle }}</div>
-            <sc-if value="{{ dwSub }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#9C988C;margin-top:3px;line-height:1.55;">{{ dwSub }}</div></sc-if>
+            <sc-if value="{{ dwSub }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#B6AE9D;margin-top:3px;line-height:1.55;">{{ dwSub }}</div></sc-if>
           </div>
-          <sc-if value="{{ dwBack }}" hint-placeholder-val="{{ false }}"><span data-act="back" style="flex:none;cursor:pointer;font-size:12.5px;color:#9C988C;border:1px solid #4A463E;border-radius:14px;padding:5px 12px;margin-right:8px;white-space:nowrap;">← 返回</span></sc-if>
-          <span data-act="close" style="flex:none;cursor:pointer;width:34px;height:34px;border-radius:50%;border:1px solid #4A463E;display:flex;align-items:center;justify-content:center;font-size:18px;color:#9C988C;background:rgba(48,44,39,.5);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);">×</span>
+          <sc-if value="{{ dwBack }}" hint-placeholder-val="{{ false }}"><span data-act="back" style="flex:none;cursor:pointer;font-size:12.5px;color:#B6AE9D;border:1px solid #4A463E;border-radius:14px;padding:5px 12px;margin-right:8px;white-space:nowrap;">← 返回</span></sc-if>
+          <span data-act="close" style="flex:none;cursor:pointer;width:34px;height:34px;border-radius:50%;border:1px solid #4A463E;display:flex;align-items:center;justify-content:center;font-size:18px;color:#B6AE9D;background:rgba(48,44,39,.5);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);">×</span>
         </div>
 
         <div style="padding:18px 20px 60px;">
@@ -621,22 +623,22 @@
             <sc-for list="{{ dwMods }}" as="mod" hint-placeholder-count="1">
               <div style="background:rgba(48,44,39,.46);backdrop-filter:blur(14px) saturate(1.25);-webkit-backdrop-filter:blur(14px) saturate(1.25);border:1px solid rgba(222,205,160,.18);border-left:3px solid {{ mod.accent }};border-radius:8px;box-shadow:0 8px 26px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,248,232,.14);padding:15px 17px;">
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px;">
-                  <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#B0AB9C;font-weight:600;">{{ mod.n }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#C4BCAB;font-weight:600;">{{ mod.n }}</span>
                   <span style="font-size:16px;font-weight:700;color:#D8D4C8;">{{ mod.name }}</span>
                   <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A857A;">{{ mod.en }}</span>
                   <span style="font-size:10.5px;letter-spacing:.03em;border-radius:2px;padding:2px 9px;margin-left:auto;{{ mod.locStyle }}">{{ mod.loc }}</span>
                 </div>
                 <div style="display:flex;gap:12px;margin:0 0 10px;">
-                  <span style="flex:none;width:40px;font-size:10px;letter-spacing:.05em;color:#B0AB9C;font-weight:700;padding-top:3px;font-family:'JetBrains Mono',monospace;">數據</span>
+                  <span style="flex:none;width:40px;font-size:10px;letter-spacing:.05em;color:#C4BCAB;font-weight:700;padding-top:3px;font-family:'JetBrains Mono',monospace;">數據</span>
                   <span style="flex:1;min-width:0;font-size:14px;line-height:1.6;">{{ mod.dataEl }}</span>
                 </div>
                 <sc-if value="{{ mod.fmtEl }}" hint-placeholder-val="{{ false }}"><div style="margin:0 0 11px;">{{ mod.fmtEl }}</div></sc-if>
                 <div style="display:flex;gap:12px;margin:0 0 4px;">
-                  <span style="flex:none;width:40px;font-size:10px;letter-spacing:.05em;color:#B0AB9C;font-weight:700;padding-top:5px;font-family:'JetBrains Mono',monospace;">工具</span>
+                  <span style="flex:none;width:40px;font-size:10px;letter-spacing:.05em;color:#C4BCAB;font-weight:700;padding-top:5px;font-family:'JetBrains Mono',monospace;">工具</span>
                   <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;">
                     <sc-for list="{{ mod.tools }}" as="tool" hint-placeholder-count="2">
                       <span>
-                        <span data-act="tool" data-id="{{ tool.key }}" style="font-size:12px;color:#B0AB9C;background:rgba(46,42,36,.45);backdrop-filter:blur(11px) saturate(1.2);-webkit-backdrop-filter:blur(11px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:3px;padding:3px 11px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;{{ tool.chipStyle }}">{{ tool.t }}</span>
+                        <span data-act="tool" data-id="{{ tool.key }}" style="font-size:12px;color:#C4BCAB;background:rgba(46,42,36,.45);backdrop-filter:blur(11px) saturate(1.2);-webkit-backdrop-filter:blur(11px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:3px;padding:3px 11px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;{{ tool.chipStyle }}">{{ tool.t }}</span>
                         <sc-if value="{{ tool.open }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-size:12.5px;color:#D8D4C8;background:rgba(26,23,19,.5);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);border:1px solid #454139;border-left:3px solid #C9A55C;border-radius:3px;padding:8px 12px;margin:5px 0 2px;line-height:1.6;">{{ tool.descEl }}</span></sc-if>
                       </span>
                     </sc-for>
@@ -661,7 +663,7 @@
           <svg viewBox="0 0 560 370" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:420px;display:block;" font-family="'Noto Sans TC',sans-serif">
             <defs><marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C9A55C"/></marker></defs>
             <line x1="30" y1="335" x2="540" y2="335" stroke="#3C3933"/><line x1="30" y1="20" x2="30" y2="335" stroke="#3C3933"/>
-            <text x="285" y="358" font-size="10" fill="#6E6A60" text-anchor="middle">(高維壓到 2D 的示意，軸本身沒有特定意義)</text>
+            <text x="285" y="358" font-size="10" fill="#8E8676" text-anchor="middle">(高維壓到 2D 的示意，軸本身沒有特定意義)</text>
             <ellipse cx="175" cy="155" rx="120" ry="90" fill="#8A857A" opacity="0.05"/>
             <ellipse cx="175" cy="155" rx="120" ry="90" fill="none" stroke="#5A564C" stroke-opacity="0.4" stroke-dasharray="4 3"/>
             <text x="175" y="78" font-size="11" fill="#ECE7DA" text-anchor="middle" font-weight="bold">合規語意區(意思相近 → 聚在一起)</text>
@@ -683,7 +685,7 @@
             <text x="455" y="90" font-size="11" fill="#8A857A" text-anchor="middle">無關語意(遠)</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">意思相近的聚成一團；問題落在相關那團旁邊，最近鄰就是最該檢索的段落。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">意思相近的聚成一團；問題落在相關那團旁邊，最近鄰就是最該檢索的段落。</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">一個比喻：</b>想像一個圖書館，把書擺在地板上，讓主題相近的書互相靠近。要找「跟這本相似的書」，看它旁邊就行。嵌入就是把這件事，在高維空間、對「文字的意思」做一次。</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">機制回顧：</b>文字 → 分詞 → 過 transformer 編碼器 → 池化 → 正規化。至於「相近」怎麼量、百萬向量怎麼快找——是下一站 <b style="color:#F2EFE6;font-weight:600;">T2</b>。</p>
@@ -699,7 +701,7 @@
           <svg viewBox="0 0 560 370" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:440px;display:block;" font-family="sans-serif">
             <defs><marker id="ahde" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C9A55C"/></marker></defs>
             <line x1="30" y1="335" x2="540" y2="335" stroke="#3C3933"/><line x1="30" y1="20" x2="30" y2="335" stroke="#3C3933"/>
-            <text x="285" y="358" font-size="10" fill="#6E6A60" text-anchor="middle">(high-dim squashed to 2D; the axes themselves carry no meaning)</text>
+            <text x="285" y="358" font-size="10" fill="#8E8676" text-anchor="middle">(high-dim squashed to 2D; the axes themselves carry no meaning)</text>
             <ellipse cx="175" cy="155" rx="120" ry="90" fill="#8A857A" opacity="0.05"/>
             <ellipse cx="175" cy="155" rx="120" ry="90" fill="none" stroke="#5A564C" stroke-opacity="0.4" stroke-dasharray="4 3"/>
             <text x="175" y="78" font-size="11" fill="#ECE7DA" text-anchor="middle" font-weight="bold">compliance-meaning region (similar → clustered)</text>
@@ -721,7 +723,7 @@
             <text x="455" y="90" font-size="11" fill="#8A857A" text-anchor="middle">unrelated meaning (far)</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">Similar meanings cluster; the question lands beside the relevant cluster, and its nearest neighbors are exactly the chunks to retrieve.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">Similar meanings cluster; the question lands beside the relevant cluster, and its nearest neighbors are exactly the chunks to retrieve.</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">An analogy:</b> imagine a library that lays books on the floor so that books on similar topics sit near each other. To find “books like this one,” just look at its neighbors. An embedding does exactly this — in high-dimensional space, for the “meaning of text.”</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">Mechanism recap:</b> text → tokenize → pass through a transformer encoder → pool → normalize. How “closeness” is measured and how millions of vectors are searched fast is the next stop, <b style="color:#F2EFE6;font-weight:600;">T2</b>.</p>
@@ -755,7 +757,7 @@
             <text x="300" y="165" font-size="11" fill="#ECEAE1">夾角越小 → 越同方向 → 越相似</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">相似度 = 兩個箭頭有多「同方向」；正規化後，算內積就等於算餘弦。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">相似度 = 兩個箭頭有多「同方向」；正規化後，算內積就等於算餘弦。</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">② 百萬條裡怎麼快找。</b>笨方法是問題和「每一條」都算一次再排序——1000 萬 × 1024 維上百億次乘加，即時回答撐不住。解法是「ANN 近似最近鄰」：用聰明的索引只跟一小部分比較，用一點點準確度換幾百倍速度。</p>
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">為何要「近似」？</b>高維空間裡保證「精確」最近鄰幾乎等於要檢查全部。所以接受 95–99% 召回，換巨大加速。對 RAG，速度才是命。</p>
@@ -772,12 +774,12 @@
               <circle cx="410" cy="248" r="4"/><circle cx="435" cy="262" r="4"/><circle cx="420" cy="278" r="4"/>
               <circle cx="150" cy="270" r="4"/><circle cx="177" cy="285" r="4"/><circle cx="135" cy="292" r="4"/>
             </g>
-            <g font-size="10" fill="#6E6A60" text-anchor="middle">
+            <g font-size="10" fill="#8E8676" text-anchor="middle">
               <text x="415" y="75">天氣群 · 跳過</text><text x="420" y="305">體育群 · 跳過</text><text x="152" y="315">食譜群 · 跳過</text>
             </g>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">ANN：先把向量粗分群，只搜離問題最近的那幾群，其餘整群跳過。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">ANN：先把向量粗分群，只搜離問題最近的那幾群，其餘整群跳過。</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">兩個主流做法：</b><b style="color:#F2EFE6;font-weight:600;">HNSW</b>——把向量連成「鄰居圖」，像「朋友的朋友」幾跳就到目標附近(最常用)；<b style="color:#F2EFE6;font-weight:600;">IVF</b>——用 k-means 切群，只搜最近的幾群。FAISS 和各向量庫底層就是這些。</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">下一站 T3：</b>段落塞進 prompt 後，模型推理(prefill / decode / KV cache)怎麼跑、為何省算力。</p>
@@ -806,7 +808,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="300" y="165" font-size="11" fill="#ECEAE1">smaller angle → more aligned → more similar</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">Similarity = how much two arrows point the same way; once normalized, the dot product equals the cosine.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">Similarity = how much two arrows point the same way; once normalized, the dot product equals the cosine.</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">② Finding the nearest fast among millions.</b> The naive way scores the query against “every” vector then sorts — 10M × 1024 dims is tens of billions of multiply-adds, too slow for real time. The fix is “ANN — approximate nearest neighbor”: a smart index compares against only a small subset, trading a little accuracy for hundreds of times the speed.</p>
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">Why “approximate”?</b> In high-dim space, guaranteeing the “exact” nearest neighbor is almost the same as checking all of them. So accept 95–99% recall for a huge speedup. For RAG, speed is everything.</p>
@@ -823,12 +825,12 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
               <circle cx="410" cy="248" r="4"/><circle cx="435" cy="262" r="4"/><circle cx="420" cy="278" r="4"/>
               <circle cx="150" cy="270" r="4"/><circle cx="177" cy="285" r="4"/><circle cx="135" cy="292" r="4"/>
             </g>
-            <g font-size="10" fill="#6E6A60" text-anchor="middle">
+            <g font-size="10" fill="#8E8676" text-anchor="middle">
               <text x="415" y="75">weather cluster · skip</text><text x="420" y="305">sports cluster · skip</text><text x="152" y="315">recipe cluster · skip</text>
             </g>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">ANN: coarsely cluster the vectors first, search only the few clusters nearest the query, skip whole clusters.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">ANN: coarsely cluster the vectors first, search only the few clusters nearest the query, skip whole clusters.</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">Two mainstream methods:</b> <b style="color:#F2EFE6;font-weight:600;">HNSW</b> — link vectors into a “neighbor graph” and hop “friend of a friend” to the target's vicinity in a few jumps (most common); <b style="color:#F2EFE6;font-weight:600;">IVF</b> — k-means into clusters, search only the nearest few. FAISS and the vector DBs are built on these.</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">Next stop, T3:</b> once chunks are stuffed into the prompt, how the model's inference (prefill / decode / KV cache) runs and why it saves compute.</p>
@@ -852,11 +854,11 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="255" y="64" font-size="11.5" fill="#fff" text-anchor="middle">整段 prompt(含檢索段落)一次並行算好 → 存入 KV cache</text>
             <text x="40" y="108" font-size="12" font-weight="bold" fill="#C9A55C">Decode 解碼(逐字，重用 cache)</text>
             <g font-size="11">
-              <rect x="40" y="120" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="137" fill="#B0AB9C" text-anchor="middle">重用前面 6 格(K/V 已快取)</text>
+              <rect x="40" y="120" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="137" fill="#C4BCAB" text-anchor="middle">重用前面 6 格(K/V 已快取)</text>
               <rect x="346" y="120" width="74" height="26" rx="3" fill="#C9A55C"/><text x="383" y="137" fill="#fff" text-anchor="middle">+1 新格</text><text x="430" y="137" fill="#ECEAE1">→「根」</text>
-              <rect x="40" y="154" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="171" fill="#B0AB9C" text-anchor="middle">重用前面 7 格</text>
+              <rect x="40" y="154" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="171" fill="#C4BCAB" text-anchor="middle">重用前面 7 格</text>
               <rect x="346" y="154" width="74" height="26" rx="3" fill="#C9A55C"/><text x="383" y="171" fill="#fff" text-anchor="middle">+1 新格</text><text x="430" y="171" fill="#ECEAE1">→「據」</text>
-              <rect x="40" y="188" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="205" fill="#B0AB9C" text-anchor="middle">重用前面 8 格</text>
+              <rect x="40" y="188" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="205" fill="#C4BCAB" text-anchor="middle">重用前面 8 格</text>
               <rect x="346" y="188" width="74" height="26" rx="3" fill="#C9A55C"/><text x="383" y="205" fill="#fff" text-anchor="middle">+1 新格</text><text x="430" y="205" fill="#ECEAE1">→「§4.3」</text>
             </g>
             <text x="40" y="238" font-size="10.5" fill="#8A857A">… 逐字到結束符</text>
@@ -865,7 +867,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="54" y="296" font-size="11" fill="#ECE7DA" font-weight="bold">有 cache：</text><text x="130" y="296" font-size="11" fill="#ECEAE1">每字只算 1 新格，前面 n−1 格直接重用</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">prefill 把整段 prompt 一次算好；decode 逐字生成，每字只算新格、重用 cache。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">prefill 把整段 prompt 一次算好；decode 逐字生成，每字只算新格、重用 cache。</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">KV cache 為何省算力。</b>沒快取的話，生成第 n 字要把前面 n−1 個的 K/V 重算一次，巨量重複(O(n²))。KV cache 把已算的 K/V 存起來，生成新字時<b style="color:#F2EFE6;font-weight:600;">只算新這一個、其餘重用</b>。代價：cache 很吃 GPU 記憶體，才有 PagedAttention(vLLM)這類優化。</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">收束。</b>長 prompt 更貴(prefill 大、cache 大)；長答案更慢(decode 序列式)。這就是推理成本與延遲的來源。</p>
@@ -884,11 +886,11 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="255" y="64" font-size="11" fill="#fff" text-anchor="middle">whole prompt (incl. retrieved chunks) computed in parallel → stored in KV cache</text>
             <text x="40" y="108" font-size="12" font-weight="bold" fill="#C9A55C">Decode (token by token, reusing the cache)</text>
             <g font-size="11">
-              <rect x="40" y="120" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="137" fill="#B0AB9C" text-anchor="middle">reuse the prior 6 (K/V cached)</text>
+              <rect x="40" y="120" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="137" fill="#C4BCAB" text-anchor="middle">reuse the prior 6 (K/V cached)</text>
               <rect x="346" y="120" width="74" height="26" rx="3" fill="#C9A55C"/><text x="383" y="137" fill="#fff" text-anchor="middle">+1 new</text><text x="430" y="137" fill="#ECEAE1">→ “Per”</text>
-              <rect x="40" y="154" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="171" fill="#B0AB9C" text-anchor="middle">reuse the prior 7</text>
+              <rect x="40" y="154" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="171" fill="#C4BCAB" text-anchor="middle">reuse the prior 7</text>
               <rect x="346" y="154" width="74" height="26" rx="3" fill="#C9A55C"/><text x="383" y="171" fill="#fff" text-anchor="middle">+1 new</text><text x="430" y="171" fill="#ECEAE1">→ “§4.3”</text>
-              <rect x="40" y="188" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="205" fill="#B0AB9C" text-anchor="middle">reuse the prior 8</text>
+              <rect x="40" y="188" width="300" height="26" rx="3" fill="#34322D" stroke="#4A463E"/><text x="190" y="205" fill="#C4BCAB" text-anchor="middle">reuse the prior 8</text>
               <rect x="346" y="188" width="74" height="26" rx="3" fill="#C9A55C"/><text x="383" y="205" fill="#fff" text-anchor="middle">+1 new</text><text x="430" y="205" fill="#ECEAE1">→ “verify”</text>
             </g>
             <text x="40" y="238" font-size="10.5" fill="#8A857A">… token by token to the stop symbol</text>
@@ -897,7 +899,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="54" y="296" font-size="11" fill="#ECE7DA" font-weight="bold">With cache:</text><text x="134" y="296" font-size="11" fill="#ECEAE1">each token computes 1 new, reuses the prior n−1</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 14px;">Prefill computes the whole prompt at once; decode generates token by token, computing only the new one and reusing the cache.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">Prefill computes the whole prompt at once; decode generates token by token, computing only the new one and reusing the cache.</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">Why the KV cache saves compute.</b> Without a cache, generating the n-th token recomputes the K/V of all n−1 previous ones — massive duplication (O(n²)). The KV cache stores already-computed K/V, so a new token <b style="color:#F2EFE6;font-weight:600;">computes only itself and reuses the rest</b>. The cost: the cache eats GPU memory, which is why optimizations like PagedAttention (vLLM) exist.</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">Wrap-up.</b> A long prompt is more expensive (big prefill, big cache); a long answer is slower (sequential decode). That's where inference cost and latency come from.</p>
@@ -930,7 +932,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="166" font-size="10.5" fill="#ECEAE1" text-anchor="middle">思考也是 token → 更慢更貴，但難題更準</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">先生成一段「思考」再給答案——用推理時的算力換準確度。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">先生成一段「思考」再給答案——用推理時的算力換準確度。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
@@ -955,7 +957,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="166" font-size="10.5" fill="#ECEAE1" text-anchor="middle">thinking is tokens too → slower &amp; pricier, but more accurate on hard problems</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">Generate a stretch of “thinking” first, then the answer — trading inference compute for accuracy.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">Generate a stretch of “thinking” first, then the answer — trading inference compute for accuracy.</p>
           </sc-if>
           <span data-act="tick" data-id="frontier-reason" style="display:inline-block;margin-top:14px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.fReason.style }}">{{ tk.fReason.text }}</span>
           </sc-if>
@@ -1025,7 +1027,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="220" font-size="10.5" fill="#ECEAE1" text-anchor="middle">每個 token 只激活幾個專家 → 參數可極大、運算卻便宜</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">路由器只挑幾個專家來算，其餘不動——所以又大又便宜。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">路由器只挑幾個專家來算，其餘不動——所以又大又便宜。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
@@ -1056,7 +1058,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="220" font-size="10.5" fill="#ECEAE1" text-anchor="middle">each token activates only a few experts → params can be huge, compute stays cheap</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">The router picks just a few experts to run, leaving the rest idle — so it's both big and cheap.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">The router picks just a few experts to run, leaving the rest idle — so it's both big and cheap.</p>
           </sc-if>
           <span data-act="tick" data-id="frontier-moe" style="display:inline-block;margin-top:14px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.fMoe.style }}">{{ tk.fMoe.text }}</span>
           </sc-if>
@@ -1088,7 +1090,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="180" font-size="10.5" fill="#ECEAE1" text-anchor="middle">小模型猜、大模型一次驗；接受 3、退回 1 → 比逐字快</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">用小模型先猜一批，大模型一次過驗證——猜中就省掉逐字的時間。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">用小模型先猜一批，大模型一次過驗證——猜中就省掉逐字的時間。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
@@ -1115,7 +1117,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="180" font-size="10.5" fill="#ECEAE1" text-anchor="middle">small guesses, big verifies in one pass; accept 3, roll back 1 → faster than token-by-token</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">Let a small model guess a batch first, the big model verifies in one pass — correct guesses save token-by-token time.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">Let a small model guess a batch first, the big model verifies in one pass — correct guesses save token-by-token time.</p>
           </sc-if>
           <span data-act="tick" data-id="frontier-infra" style="display:inline-block;margin-top:14px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.fInfra.style }}">{{ tk.fInfra.text }}</span>
           </sc-if>
@@ -1146,7 +1148,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <rect x="216" y="176" width="128" height="30" rx="4" fill="#2E2A24" stroke="#C9A55C"/><text x="280" y="195" font-size="11.5" fill="#ECEAE1" text-anchor="middle">整合結果</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">主管分派 → 各 worker 做一塊 → 交接整合。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">主管分派 → 各 worker 做一塊 → 交接整合。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
@@ -1172,7 +1174,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <rect x="216" y="176" width="128" height="30" rx="4" fill="#2E2A24" stroke="#C9A55C"/><text x="280" y="195" font-size="11.5" fill="#ECEAE1" text-anchor="middle">integrate results</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">Supervisor assigns → each worker does a piece → hand off and integrate.</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">Supervisor assigns → each worker does a piece → hand off and integrate.</p>
           </sc-if>
           <span data-act="tick" data-id="frontier-multiagent" style="display:inline-block;margin-top:14px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.fMulti.style }}">{{ tk.fMulti.text }}</span>
           </sc-if>
@@ -1199,7 +1201,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="182" font-size="10.5" fill="#ECEAE1" text-anchor="middle">模型分不清「資料」與「指令」——間接注入對會檢索外部內容的系統最危</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">惡意指令可藏在用戶輸入(直接)，也可藏在被檢索的內容裡(間接)。</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">惡意指令可藏在用戶輸入(直接)，也可藏在被檢索的內容裡(間接)。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
@@ -1221,7 +1223,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <text x="280" y="182" font-size="10" fill="#ECEAE1" text-anchor="middle">the model can't tell “data” from “instructions” — indirect injection hits any system that retrieves</text>
           </svg>
           </div>
-          <p style="font-size:12px;color:#9C988C;text-align:center;margin:6px 0 0;">Malicious instructions can hide in user input (direct) or in retrieved content (indirect).</p>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">Malicious instructions can hide in user input (direct) or in retrieved content (indirect).</p>
           </sc-if>
           <span data-act="tick" data-id="frontier-security" style="display:inline-block;margin-top:14px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.fSec.style }}">{{ tk.fSec.text }}</span>
           </sc-if>
@@ -1244,7 +1246,7 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
           </sc-if>
           <sc-if value="{{ dwRelated }}" hint-placeholder-val="{{ false }}">
           <div style="margin-top:18px;border-top:1px solid #3C3933;padding-top:14px;">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:#9C988C;margin-bottom:9px;">在同一張地圖上相連 · 點即跳</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:#B6AE9D;margin-bottom:9px;">在同一張地圖上相連 · 點即跳</div>
             <div style="display:flex;flex-direction:column;gap:7px;">
               <sc-for list="{{ dwRelated }}" as="r" hint-placeholder-count="2">
                 <span data-act="go" data-id="{{ r.go }}" style="cursor:pointer;display:flex;align-items:center;gap:9px;background:#2A2824;border:1px solid #454139;border-left:3px solid {{ r.color }};border-radius:6px;padding:9px 12px;">
@@ -1735,13 +1737,11 @@ class Component extends DCLogic {
       const sc=Math.max(.3,Math.min(1,(w-24)/960)), ls=Math.max(.32,Math.min(1,(w-24)/760));
       if(sc!==this.state.scale||ls!==this.state.ladderScale) this.setState({scale:sc, ladderScale:ls}); };
     this._fit=fit; fit();
-    // mobile top-nav scroll affordance: a chevron that nudges, and fades out at the end
-    const nav=document.querySelector("[data-appnav]"), more=document.querySelector("[data-navmore]");
-    if(nav&&more){
-      const upd=()=>{ const can=(nav.scrollWidth-nav.clientWidth)>6; const atEnd=nav.scrollLeft>=(nav.scrollWidth-nav.clientWidth-6); const show=can&&!atEnd; more.style.opacity=show?"1":"0"; more.style.pointerEvents=show?"auto":"none"; };
-      nav.addEventListener("scroll",upd,{passive:true}); window.addEventListener("resize",upd,{passive:true});
-      more.addEventListener("click",(e)=>{ e.stopPropagation(); nav.scrollBy({left:Math.round(nav.clientWidth*0.7),behavior:"smooth"}); });
-      this._navUpd=upd; setTimeout(upd,300); setTimeout(upd,1000);
+    // mobile top-nav: keep the active tab scrolled into view so the row never opens mid-tab
+    const nav=document.querySelector("[data-appnav]");
+    if(nav){
+      this._navSync=()=>{ const id=this.state.scene||this.state.sc; const a=id?nav.querySelector('[data-act="scene"][data-id="'+id+'"]'):null; if(a&&nav.scrollWidth>nav.clientWidth){ const l=a.offsetLeft-16; nav.scrollTo({left:Math.max(0,l),behavior:"smooth"}); } };
+      setTimeout(this._navSync,400);
     }
     requestAnimationFrame(fit); setTimeout(fit,250); setTimeout(fit,900);
     window.addEventListener("resize", fit, {passive:true});
@@ -1788,11 +1788,11 @@ class Component extends DCLogic {
   styleize(s){ return String(s)
     .split('class="conf"').join('style="color:#E89A78;font-weight:600"')
     .split('class="cm"').join('style="color:#8A857A"')
-    .split('class="arrowlit"').join('style="color:#B0AB9C;font-weight:700"'); }
+    .split('class="arrowlit"').join('style="color:#C4BCAB;font-weight:700"'); }
   styleizeDark(s){ return String(s)
     .split('class="conf"').join('style="color:#E8A07A;font-weight:600"')
     .split('class="cm"').join('style="color:#8A857A"')
-    .split('class="arrowlit"').join('style="color:#9C988C;font-weight:700"'); }
+    .split('class="arrowlit"').join('style="color:#B6AE9D;font-weight:700"'); }
   linkify(s){ let t=this.styleize(s); this.GLYPHS.forEach(g=>{ if(this.NODEMAP[g])
     t=t.split(g).join('<a data-act="glyph" data-id="'+g+'" style="color:#C9A55C;cursor:pointer;border-bottom:1px dotted #C9A55C;font-weight:600;text-decoration:none">'+g+'</a>'); }); return t; }
   el(tag,html,style){ return React.createElement(tag,{style,dangerouslySetInnerHTML:{__html:html}}); }
@@ -1814,13 +1814,13 @@ class Component extends DCLogic {
     const tlEn=(this.state.lang==="en");
     const tools=(m.tools||[]).map((tl,ti)=>{ const key=sKey+"-"+i+"-"+ti; const to=!!this.state.openTools[key];
       const exV=tlEn?(tl.exEn||""):tl.ex;
-      const exHtml=exV?('<span style="display:block;margin-top:6px;color:#B0AB9C"><b style="color:#F2EFE6">'+(tlEn?"e.g.":"例")+'</b>'+(tlEn?" ":"：")+this.esc(exV)+'</span>'):"";
+      const exHtml=exV?('<span style="display:block;margin-top:6px;color:#C4BCAB"><b style="color:#F2EFE6">'+(tlEn?"e.g.":"例")+'</b>'+(tlEn?" ":"：")+this.esc(exV)+'</span>'):"";
       return {key, t:tl.t, open:to, chipStyle: to?"background:#43321F;border-color:#F2EFE6;color:#fff;":"", descEl:this.el("span",this.esc(tl.d)+exHtml)}; });
     const done=this.cardDone(mid,cov);
     const en=(this.state.lang==="en");
     const fmtS=en?(m.fmtEn||m.fmt):m.fmt;
     const mechS=en?(m.mechEn||m.mech):m.mech;
-    return { id:mid, n:m.n, name:m.name, en:m.en, loc:m.loc, accent:m.hub?"#C9A55C":"#6E6A60",
+    return { id:mid, n:m.n, name:m.name, en:m.en, loc:m.loc, accent:m.hub?"#C9A55C":"#8E8676",
       locStyle: m.serv?"color:#C9A55C;border:1px solid #C9A55C;":"color:#F2EFE6;border:1px solid #9BA6BC;",
       dataEl:this.el("span",this.linkify(en?(this.EN[this.strip(m.data)]||m.data):m.data)), fmtEl:fmtS?this.preEl(fmtS):null,
       mechEl:mechS?this.el("span",this.linkify(mechS)):null, deep:m.deep||null, deepLabel:m.deepLabel||"",
