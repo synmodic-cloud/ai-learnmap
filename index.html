@@ -401,7 +401,7 @@
         <div style="margin-bottom:18px;">
           <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE 03 · 深入專題</div>
           <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">挑出最關鍵的節點，一路鑽到底</h1>
-          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">這三站把地圖上最核心的機制鑽到數學與工程的底。點開細讀。</p>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:640px;line-height:1.65;">這幾站把地圖上最核心的機制鑽到數學與工程的底。點開細讀。</p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
           <div data-act="go" data-id="deep-embed" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:13px;padding:20px;transition:all .18s;">
@@ -420,6 +420,12 @@
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1A1916;background:#C9A55C;border-radius:4px;padding:2px 9px;">T3</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;">LLM Serving</span></div>
             <div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#F4F1E8;line-height:1.4;">推理服務：逐字生成與 KV cache</div>
             <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">prefill 與 decode 的成本差，以及 KV cache 為何能省下巨量重算。</p>
+            <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
+          </div>
+          <div data-act="go" data-id="deep-flow" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:13px;padding:20px;transition:all .18s;">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1A1916;background:#C9A55C;border-radius:4px;padding:2px 9px;">T4</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;">Who calls whom</span></div>
+            <div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#F4F1E8;line-height:1.4;">一次提問：後端 × 向量庫 × MaaS 怎麼分工</div>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">誰主動、誰被動、誰跟誰說話——把調用與流轉一次看清。</p>
             <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
           </div>
         </div>
@@ -1052,6 +1058,36 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
           </svg>
           </div>
           <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">prefill 把整段 prompt 一次算好；decode 逐字生成，每字只算新格、重用 cache。</p>
+          <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;margin:2px 0 6px;">
+            <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">換個角度：看 KV cache 一格一格長大。</b>一格＝一個 token 的 K/V。Prefill 把整段 prompt 的格子<b style="color:#F2EFE6;font-weight:600;">一次並行</b>填好；之後每個 decode 步<b style="color:#C9A55C;">只新增一格(橙)</b>、其餘<b style="color:#F2EFE6;font-weight:600;">整列重用(灰)</b>。</p>
+          </div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:6px 0;overflow-x:auto;">
+          <svg viewBox="0 0 560 286" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:470px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <text x="14" y="15" font-size="11" font-weight="bold" fill="#ECE7DA">KV cache 怎麼一格一格長大（一格 = 一個 token 的 K/V）</text>
+            <rect x="128" y="23" width="13" height="12" rx="2" fill="#34322D" stroke="#4A463E"/><text x="146" y="33" font-size="9.3" fill="#A8A496">重用(cache 命中)</text>
+            <rect x="258" y="23" width="13" height="12" rx="2" fill="#C9A55C"/><text x="276" y="33" font-size="9.3" fill="#A8A496">本步新算</text>
+            <rect x="356" y="23" width="13" height="12" rx="2" fill="#6E5A48"/><text x="374" y="33" font-size="9.3" fill="#A8A496">Prefill 並行</text>
+            <g font-size="9.5">
+              <text x="14" y="62" fill="#ECE7DA" font-weight="bold">① Prefill</text>
+              <rect x="128" y="48" width="24" height="22" rx="3" fill="#6E5A48"/><rect x="158" y="48" width="24" height="22" rx="3" fill="#6E5A48"/><rect x="188" y="48" width="24" height="22" rx="3" fill="#6E5A48"/><rect x="218" y="48" width="24" height="22" rx="3" fill="#6E5A48"/><rect x="248" y="48" width="24" height="22" rx="3" fill="#6E5A48"/>
+              <text x="382" y="62" fill="#A8A496">整段 prompt 5 格一次並行算好</text>
+              <text x="14" y="102" fill="#ECE7DA" font-weight="bold">② Decode-1</text>
+              <rect x="128" y="88" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="158" y="88" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="188" y="88" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="218" y="88" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="248" y="88" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="278" y="88" width="24" height="22" rx="3" fill="#C9A55C"/>
+              <text x="312" y="102" fill="#A8A496">新算 1 格 · 重用 5 → 吐 token6</text>
+              <text x="14" y="142" fill="#ECE7DA" font-weight="bold">③ Decode-2</text>
+              <rect x="128" y="128" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="158" y="128" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="188" y="128" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="218" y="128" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="248" y="128" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="278" y="128" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="308" y="128" width="24" height="22" rx="3" fill="#C9A55C"/>
+              <text x="342" y="142" fill="#A8A496">新算 1 · 重用 6 → token7</text>
+              <text x="14" y="182" fill="#ECE7DA" font-weight="bold">④ Decode-3</text>
+              <rect x="128" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="158" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="188" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="218" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="248" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="278" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="308" y="168" width="24" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><rect x="338" y="168" width="24" height="22" rx="3" fill="#C9A55C"/>
+              <text x="372" y="182" fill="#A8A496">新算 1 · 重用 7 → token8</text>
+            </g>
+            <text x="14" y="208" font-size="9.5" fill="#8A857A">… 每步只 +1 格（橙），其餘整列讀 cache（灰），直到輸出停止符</text>
+            <rect x="14" y="220" width="532" height="54" rx="5" fill="#201E1B" stroke="#3C3933"/>
+            <text x="28" y="240" font-size="10.3" fill="#C25A4E" font-weight="bold">沒 cache：</text><text x="84" y="240" font-size="10.3" fill="#ECEAE1">每步把前面全部 K/V 重算 → O(n²)，越長越慢</text>
+            <text x="28" y="261" font-size="10.3" fill="#7FAE7A" font-weight="bold">有 cache：</text><text x="84" y="261" font-size="10.3" fill="#ECEAE1">每步只算 1 格、其餘讀 cache → 近線性，省巨量重算</text>
+          </svg>
+          </div>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">把 prefill→decode 走成一條 journey：cache 從「並行填滿」到「每步只長一格」。</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">KV cache 為何省算力。</b>沒快取的話，生成第 n 字要把前面 n−1 個的 K/V 重算一次，巨量重複(O(n²))。KV cache 把已算的 K/V 存起來，生成新字時<b style="color:#F2EFE6;font-weight:600;">只算新這一個、其餘重用</b>。代價：cache 很吃 GPU 記憶體，才有 PagedAttention(vLLM)這類優化。</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">收束。</b>長 prompt 更貴(prefill 大、cache 大)；長答案更慢(decode 序列式)。這就是推理成本與延遲的來源。</p>
@@ -1090,6 +1126,38 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
           </div>
           </sc-if>
           <span data-act="tick" data-id="deep-infer" style="display:inline-block;margin-top:15px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.deepInfer.style }}">{{ tk.deepInfer.text }}</span>
+          </sc-if>
+
+          <!-- DEEP flow: who calls whom -->
+          <sc-if value="{{ dwDeepFlow }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
+            <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">一句話。</b><b style="color:#C9A55C;">後端／編排層是唯一「主動方」</b>；向量庫(Vector DB)和 MaaS(Model-as-a-Service，模型即服務)都是<b style="color:#F2EFE6;font-weight:600;">被動服務</b>，只在被呼叫時回應，<b style="color:#F2EFE6;font-weight:600;">彼此從不直接對話</b>。</p>
+          </div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:6px 0;overflow-x:auto;">
+          <svg viewBox="0 0 560 296" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:460px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <defs><marker id="df" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A857A"/></marker></defs>
+            <rect x="228" y="14" width="104" height="34" rx="5" fill="#2B2926" stroke="#4A463E"/><text x="280" y="36" font-size="11" fill="#ECEAE1" text-anchor="middle">前端 Client</text>
+            <rect x="204" y="116" width="152" height="64" rx="7" fill="#2E2A24" stroke="#C9A55C"/><text x="280" y="142" font-size="12.5" fill="#F2EFE6" text-anchor="middle" font-weight="bold">後端／編排層</text><text x="280" y="161" font-size="9.3" fill="#C9A55C" text-anchor="middle">唯一主動方·中樞·守門</text><text x="280" y="174" font-size="8.6" fill="#8A857A" text-anchor="middle">④ 本地組裝 Prompt</text>
+            <rect x="22" y="120" width="146" height="58" rx="6" fill="#34322D" stroke="#4A463E"/><text x="95" y="144" font-size="11" fill="#ECEAE1" text-anchor="middle">向量庫 Vector DB</text><text x="95" y="161" font-size="9" fill="#8A857A" text-anchor="middle">被動：只回 top-k 原文</text>
+            <rect x="392" y="120" width="146" height="58" rx="6" fill="#34322D" stroke="#4A463E"/><text x="465" y="144" font-size="11" fill="#ECEAE1" text-anchor="middle">MaaS（嵌入＋生成）</text><text x="465" y="161" font-size="9" fill="#8A857A" text-anchor="middle">被動：只回 向量／答案</text>
+            <rect x="228" y="248" width="104" height="34" rx="5" fill="#2B2926" stroke="#4A463E"/><text x="280" y="270" font-size="11" fill="#ECEAE1" text-anchor="middle">日誌 Logs</text>
+            <line x1="280" y1="48" x2="280" y2="116" stroke="#7A756A" marker-start="url(#df)" marker-end="url(#df)"/>
+            <text x="288" y="74" font-size="9.3" fill="#A8A496">① 問題 ↓</text><text x="288" y="100" font-size="9.3" fill="#A8A496">⑥ 答案+引用 ↑</text>
+            <line x1="204" y1="150" x2="168" y2="150" stroke="#7A756A" marker-start="url(#df)" marker-end="url(#df)"/>
+            <text x="40" y="110" font-size="9.3" fill="#A8A496">③ 查詢向量 → top-k（ACL 過濾）</text>
+            <line x1="356" y1="150" x2="392" y2="150" stroke="#7A756A" marker-start="url(#df)" marker-end="url(#df)"/>
+            <text x="392" y="110" font-size="9.3" fill="#A8A496">② 嵌入 · ⑤ 生成</text>
+            <line x1="280" y1="180" x2="280" y2="248" stroke="#7A756A" marker-end="url(#df)"/>
+            <text x="288" y="220" font-size="9.3" fill="#A8A496">⑦ 寫日誌</text>
+            <text x="280" y="232" font-size="9.6" fill="#C25A4E" text-anchor="middle">向量庫 與 MaaS 之間沒有任何連線 —— 都只跟後端說話</text>
+          </svg>
+          </div>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 13px;">後端發起每一次呼叫、再收回結果；向量庫與 MaaS 各自被動、互不通訊。</p>
+          <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
+            <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">流轉七步。</b>① 前端→後端：問題。② 後端→MaaS 嵌入端點：問題轉<b style="color:#F2EFE6;font-weight:600;">查詢向量</b>。③ 後端→向量庫：相似度檢索＋ACL 過濾 → top-k 原文。④ 後端<b style="color:#F2EFE6;font-weight:600;">(本地)</b>：系統指令＋原文＋問題 拼成完整 Prompt。⑤ 後端→MaaS 生成端點：Prompt → 答案。⑥ 後端→前端：守門、加引用後回傳。⑦ 後端→日誌：寫一份副本。</p>
+            <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">三個關鍵。</b>(1) <b style="color:#F2EFE6;font-weight:600;">向量庫與 MaaS 互不知道對方存在</b>，是後端把前者的輸出搬成後者的輸入。(2) 一切<b style="color:#F2EFE6;font-weight:600;">判斷與守門只能發生在後端</b>(唯一看得到全貌、又在你邊界內)。(3) <b style="color:#F2EFE6;font-weight:600;">Agentic RAG</b> 只是把 ②③ 由後端多跑幾輪，分工不變。</p>
+          </div>
+          <span data-act="tick" data-id="deep-flow" style="display:inline-block;margin-top:15px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.deepFlow.style }}">{{ tk.deepFlow.text }}</span>
           </sc-if>
           <!-- FRONTIER reason -->
           <sc-if value="{{ dwFrontReason }}" hint-placeholder-val="{{ false }}">
@@ -1153,6 +1221,23 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
             <p style="margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">是什麼。</b>經典 <b style="color:#C9A55C;">RAG（Retrieval-Augmented Generation，檢索增強生成）</b>是「一次檢索 → 生成」(固定管線)。<b style="color:#F2EFE6;font-weight:600;">代理式檢索(Agentic RAG)</b>讓模型自己決定何時搜、讀完不夠再搜、多輪逼近答案。<b style="color:#F2EFE6;font-weight:600;">脈絡工程(Context Engineering)</b>是 prompt engineering 的升級：重點是管理整個<b style="color:#F2EFE6;font-weight:600;">上下文窗</b>裡放什麼——檢索結果、記憶、工具輸出、對話歷史。</p>
             <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">為何關鍵。</b>這才是 RAG 在 2026 的實際形態：檢索是 <b style="color:#F2EFE6;font-weight:600;">agent 會呼叫的一個工具</b>，不是死管線。地圖裡「RAG 管線」與「代理層」的分界，在前沿其實是融合的。</p>
           </div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:12px 0 0;overflow-x:auto;">
+          <svg viewBox="0 0 552 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:440px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <defs><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A857A"/></marker></defs>
+            <rect x="14" y="86" width="64" height="36" rx="4" fill="#2B2926" stroke="#4A463E"/><text x="46" y="108" font-size="11" fill="#ECEAE1" text-anchor="middle">問題</text>
+            <line x1="78" y1="104" x2="92" y2="104" stroke="#7A756A" marker-end="url(#ag)"/>
+            <rect x="92" y="80" width="150" height="50" rx="6" fill="#2E2A24" stroke="#C9A55C"/><text x="167" y="100" font-size="11.5" fill="#F2EFE6" text-anchor="middle" font-weight="bold">後端／Agent 思考</text><text x="167" y="117" font-size="9.5" fill="#C9A55C" text-anchor="middle">還要不要再查？</text>
+            <rect x="284" y="26" width="156" height="42" rx="5" fill="#34322D" stroke="#4A463E"/><text x="362" y="44" font-size="11" fill="#ECEAE1" text-anchor="middle">① 行動：呼叫檢索</text><text x="362" y="59" font-size="9.3" fill="#A8A496" text-anchor="middle">查詢向量 → 向量庫</text>
+            <rect x="284" y="104" width="156" height="46" rx="5" fill="#34322D" stroke="#4A463E"/><text x="362" y="123" font-size="11" fill="#ECEAE1" text-anchor="middle">② 觀察：讀回結果</text><text x="362" y="138" font-size="9.3" fill="#A8A496" text-anchor="middle">原文塊塞進上下文窗</text>
+            <line x1="242" y1="96" x2="284" y2="52" stroke="#7A756A" marker-end="url(#ag)"/>
+            <line x1="362" y1="68" x2="362" y2="104" stroke="#7A756A" marker-end="url(#ag)"/>
+            <path d="M284,132 C250,140 240,128 242,116" fill="none" stroke="#C9A55C" stroke-dasharray="5 3" marker-end="url(#ag)"/>
+            <text x="300" y="170" font-size="10" fill="#C9A55C">↻ 不夠 → 同一個後端再跑一輪</text>
+            <rect x="92" y="168" width="150" height="38" rx="5" fill="#22291F" stroke="#4F7A4A"/><text x="167" y="191" font-size="11" fill="#CFE6C9" text-anchor="middle">③ 足夠 → 生成答案</text>
+            <line x1="167" y1="130" x2="167" y2="168" stroke="#7A756A" marker-end="url(#ag)"/>
+          </svg>
+          </div>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">代理式檢索＝把「檢索」變成 agent 反覆呼叫的工具：思考→檢索→觀察→(不夠)再來，足夠才生成。指揮全程仍在後端。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
@@ -1660,6 +1745,8 @@ class Component extends DCLogic {
       {t:"JSONL", d:"JSON Lines：一行一筆 JSON；微調訓練資料的標準格式。", go:"mod-sft-0"},
       {t:"MaaS 模型即服務", d:"Model-as-a-Service：呼叫雲端模型 API，不自管 GPU。", go:"mod-query-5"},
       {t:"Context Window 上下文窗", d:"模型一次能讀的 token 上限；脈絡工程在管它放什麼。", go:"frontier-arag"},
+      {t:"編排層 Orchestrator", d:"後端中樞：唯一主動方，調度向量庫與 MaaS、組 Prompt、守門。", go:"deep-flow"},
+      {t:"服務分工 Client/Server roles", d:"後端主動呼叫；向量庫與 MaaS 被動回應、互不通訊。", go:"deep-flow"},
     ];
 
     this.HOPS = {
@@ -1723,7 +1810,7 @@ class Component extends DCLogic {
         {name:"⑤ 檢索・重排 Retrieval", note:"取回最相關片段並精排", tools:[
           {t:"向量庫搜尋 API", d:"各向量庫內建的相似度查詢"},
           {t:"BGE-reranker", d:"cross-encoder 重排模型，二次精排"},
-          {t:"Hybrid（BM25＋向量）", d:"關鍵字＋語意混合檢索，提高召回"}]},
+          {t:"Hybrid（BM25＋向量）", d:"BM25＝Best Matching 25(關鍵字檢索演算法)；與向量語意混合，提高召回"}]},
         {name:"⑥ 編排・後端 Orchestration", note:"把各步串成流程、守門", tools:[
           {t:"LangChain", d:"把 LLM／檢索／工具串成流程的框架"},
           {t:"FastAPI", d:"架設後端 API 的 Python 框架"},
@@ -1737,7 +1824,7 @@ class Component extends DCLogic {
           {t:"託管 MaaS", d:"Model-as-a-Service：雲端模型 API，免自管 GPU（SaaS）"}]},
         {name:"⑨ 後處理・守門", note:"驗證格式、過濾敏感輸出", tools:[
           {t:"Pydantic / Instructor", d:"確保答案符合預期結構，不合就重試"},
-          {t:"PII／安全過濾", d:"偵測並遮蔽敏感輸出"}]},
+          {t:"PII／安全過濾", d:"PII＝Personally Identifiable Information(個人可識別資訊)：偵測並遮蔽敏感輸出"}]},
         {name:"⑩ 可觀測・評估", note:"記錄、回放、打分", tools:[
           {t:"Langfuse", d:"開源 LLM 可觀測平台，可自託管"},
           {t:"LangSmith", d:"LangChain 的追蹤評估平台（SaaS）"},
@@ -1747,7 +1834,7 @@ class Component extends DCLogic {
           {t:"TRL（SFTTrainer）", d:"專為監督微調設計的訓練器"},
           {t:"axolotl / Unsloth", d:"更易用、更省記憶體的微調包裝"}]},
         {name:"⑫ 預訓練 Pretraining", note:"海量語料重塑底層直覺", tools:[
-          {t:"Tokenizer（BPE/SentencePiece）", d:"把文字切成 token 並轉成 id"},
+          {t:"Tokenizer（BPE/SentencePiece）", d:"BPE＝Byte Pair Encoding(位元組對編碼)：把文字切成 token 並轉成 id"},
           {t:"Megatron-LM", d:"NVIDIA 大規模分散式訓練框架"},
           {t:"DeepSpeed", d:"微軟訓練優化庫，讓超大模型訓得起"}]},
       ],
@@ -1759,7 +1846,7 @@ class Component extends DCLogic {
           {t:"LangSmith", d:"追蹤・評估・可觀測（SaaS）"}]},
         {name:"Hugging Face 生態系", color:"#C9A66A", note:"開源模型與訓練／推理工具的大本營", tools:[
           {t:"Transformers", d:"載入／執行模型的核心函式庫"},
-          {t:"PEFT / LoRA", d:"參數高效微調（只訓一小層）"},
+          {t:"PEFT / LoRA", d:"Parameter-Efficient Fine-Tuning：參數高效微調（只訓一小層）"},
           {t:"TRL（SFTTrainer）", d:"監督微調／偏好對齊訓練器"},
           {t:"TGI", d:"生產級 LLM 推理伺服器"},
           {t:"TEI", d:"嵌入專用推理伺服器"},
@@ -2243,7 +2330,7 @@ class Component extends DCLogic {
     const tickFor=id=>{ const done=this.cardDone(id,cov); const en=(this.state.lang==="en");
       return done?{style:"background:#4F7A4A;border:1px solid #4F7A4A;color:#fff;",text:(en?"✓ Marked: got it":"✓ 已標記：懂")}
                  :{style:"border:1px solid #4A463E;color:#A8A496;",text:(en?"○ Mark as got it":"○ 標記為已懂")}; };
-    const tk={ deepEmbed:tickFor("deep-embed"), deepRetrieval:tickFor("deep-retrieval"), deepInfer:tickFor("deep-infer"),
+    const tk={ deepEmbed:tickFor("deep-embed"), deepRetrieval:tickFor("deep-retrieval"), deepInfer:tickFor("deep-infer"), deepFlow:tickFor("deep-flow"),
       agents:tickFor("sec-agents"), comp:tickFor("sec-compliance"),
       fReason:tickFor("frontier-reason"), fArag:tickFor("frontier-arag"), fPref:tickFor("frontier-pref"),
       fMoe:tickFor("frontier-moe"), fInfra:tickFor("frontier-infra"), fMulti:tickFor("frontier-multiagent"),
@@ -2261,6 +2348,7 @@ class Component extends DCLogic {
       "deep-embed":["嵌入：語意如何變成數字","Embedding 深入 · T1"],
       "deep-retrieval":["檢索：相近怎麼量、百萬條怎麼快找","Retrieval 深入 · T2"],
       "deep-infer":["推理服務：逐字生成與 KV cache","LLM Serving 深入 · T3"],
+      "deep-flow":["一次提問：後端 × 向量庫 × MaaS 怎麼分工","Who calls whom · T4"],
       "frontier-reason":["推理模型 / 推理時運算","Reasoning · Test-time compute"],
       "frontier-arag":["代理式檢索 + 脈絡工程","Agentic RAG · Context Engineering"],
       "frontier-pref":["偏好微調：RLHF / DPO","Preference Tuning"],
@@ -2328,7 +2416,7 @@ class Component extends DCLogic {
       capTitle:this.state.capTitle||"", capEl: capData?this.preElDark(isEn?(capData.dEn||capData.d):capData.d):null,
       drawerOpen:this.state.drawerOpen, drawerX:this.state.drawerOpen?"0":"100%",
       dwKind, dwMods, dwRelated, dwBack, dwNext, dwTitle, dwSub, dwTag, dwTagBg,
-      dwDeepEmbed:s2==="deep-embed", dwDeepRetrieval:s2==="deep-retrieval", dwDeepInfer:s2==="deep-infer",
+      dwDeepEmbed:s2==="deep-embed", dwDeepRetrieval:s2==="deep-retrieval", dwDeepInfer:s2==="deep-infer", dwDeepFlow:s2==="deep-flow",
       dwFrontReason:s2==="frontier-reason", dwFrontArag:s2==="frontier-arag", dwFrontPref:s2==="frontier-pref",
       dwFrontMoe:s2==="frontier-moe", dwFrontInfra:s2==="frontier-infra", dwFrontMulti:s2==="frontier-multiagent",
       dwFrontSec:s2==="frontier-security", dwFrontEval:s2==="frontier-eval",
