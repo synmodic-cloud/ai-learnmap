@@ -50,11 +50,13 @@
     [data-floralscrim]{background:rgba(11,9,7,.62) !important;}
     [data-appheader]{flex-wrap:wrap;gap:9px;padding:9px 13px;}
     [data-brandsub]{display:none;}
-    [data-appnav]{order:3;flex-basis:100%;width:100%;justify-content:flex-start;gap:7px;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);scroll-snap-type:x proximity;padding:2px 30px 2px 0;}
-    [data-appnav] span[data-act="scene"]{scroll-snap-align:start;font-size:13.5px;padding:8px 13px;flex:none;}
+    /* mobile: the horizontal scrolling nav is replaced by the ☰ sidebar menu */
+    [data-appnav]{display:none !important;}
     [data-mastery]{margin-left:auto;}
     [data-navmore]{display:none !important;}
   }
+  /* ☰ sidebar trigger: visible everywhere; on desktop it complements the top nav */
+  [data-burger]{display:flex;}
 </style>
 </helmet>
 
@@ -71,6 +73,11 @@
 
   <!-- ============ TOP BAR ============ -->
   <header data-appheader style="flex:none;display:flex;align-items:center;gap:16px;padding:11px 20px;background:rgba(20,18,15,.55);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);border-bottom:1px solid rgba(207,160,92,.22);box-shadow:0 1px 0 rgba(207,160,92,.1),0 6px 24px rgba(0,0,0,.3);position:relative;z-index:40;">
+    <span data-burger data-act="sidebar" role="button" tabindex="0" aria-label="開啟選單" style="flex:none;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:38px;height:38px;cursor:pointer;border-radius:9px;border:1px solid rgba(222,205,160,.18);background:rgba(40,36,30,.4);">
+      <span style="display:block;width:17px;height:2px;background:#D8D3C6;border-radius:2px;pointer-events:none;"></span>
+      <span style="display:block;width:17px;height:2px;background:#D8D3C6;border-radius:2px;pointer-events:none;"></span>
+      <span style="display:block;width:17px;height:2px;background:#D8D3C6;border-radius:2px;pointer-events:none;"></span>
+    </span>
     <div style="display:flex;align-items:center;gap:11px;flex:none;">
       <span style="position:relative;width:33px;height:33px;border-radius:9px;overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center;background:url('assets/bloom-dark.jpg') 58% 32%/190% no-repeat;border:1px solid rgba(207,160,92,.6);box-shadow:0 2px 11px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,244,220,.4);">
         <span style="position:absolute;inset:0;background:radial-gradient(120% 120% at 50% 38%,rgba(22,17,12,.2),rgba(15,12,9,.74));"></span>
@@ -107,6 +114,35 @@
       </div>
     </div>
   </header>
+
+  <!-- ============ SIDEBAR MENU (☰) ============ -->
+  <sc-if value="{{ sidebarOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:70;">
+    <div data-act="sidebarClose" style="position:absolute;inset:0;background:rgba(8,7,5,.55);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);"></div>
+    <div data-drawer style="position:absolute;left:0;top:0;bottom:0;width:min(312px,86vw);background:rgba(24,21,17,.94);backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);border-right:1px solid rgba(207,160,92,.28);box-shadow:8px 0 44px rgba(0,0,0,.5);padding:18px 16px 28px;overflow-y:auto;animation:drawin .25s ease;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <span style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:16px;color:#F4F1E8;">系統地層 · 導覽</span>
+        <span data-act="sidebarClose" style="cursor:pointer;font-size:22px;color:#B6AE9D;line-height:1;padding:0 6px;">×</span>
+      </div>
+      <sc-for list="{{ sidebarTabs }}" as="st" hint-placeholder-count="8">
+        <div data-act="scene" data-id="{{ st.id }}" style="display:flex;gap:11px;align-items:center;cursor:pointer;border-radius:10px;padding:10px 12px;margin-bottom:6px;{{ st.style }}">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.65;flex:none;">{{ st.num }}</span>
+          <span style="display:flex;flex-direction:column;line-height:1.25;min-width:0;">
+            <span style="font-size:14px;font-weight:600;">{{ st.label }}</span>
+            <span style="font-size:11px;opacity:.72;margin-top:1px;">{{ st.desc }}</span>
+          </span>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid rgba(222,205,160,.14);margin:16px 0 12px;"></div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;letter-spacing:.14em;margin:0 2px 9px;">語言 · LANGUAGE</div>
+      <div style="display:flex;gap:8px;">
+        <sc-for list="{{ langBtns }}" as="lg" hint-placeholder-count="2">
+          <span data-act="lang" data-id="{{ lg.id }}" style="cursor:pointer;font-size:13px;padding:7px 20px;border-radius:10px;border:1px solid rgba(222,205,160,.18);{{ lg.style }}">{{ lg.label }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
 
   <div style="flex:1;display:flex;position:relative;z-index:1;overflow:hidden;">
 
@@ -603,6 +639,49 @@
             <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:8px 0 0;">怎麼知道它對、它在哪裡崩——applied 的命門。</p>
             <div style="margin-top:12px;font-size:12px;color:#C99A6B;">細讀 →</div>
           </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- TOOLS SCENE -->
+      <sc-if value="{{ isTools }}" hint-placeholder-val="{{ false }}">
+      <div style="position:relative;padding:26px 24px 50px;animation:risein .4s ease;max-width:1020px;margin:0 auto;">
+        <div style="margin-bottom:18px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;color:#CFA15C;margin-bottom:8px;border-left:2px solid rgba(207,160,92,.55);padding-left:10px;">SCENE · 工具庫 TOOLKIT</div>
+          <h1 style="font-family:'Noto Serif TC',serif;font-weight:700;font-size:27px;color:#EDE4D2;margin:0;letter-spacing:.012em;text-shadow:0 1px 20px rgba(0,0,0,.55);">那麼多工具，先看它們各站在哪一層</h1>
+          <p style="font-size:13.5px;color:#B6AE9D;margin:7px 0 0;max-width:700px;line-height:1.65;">同一件事常有好幾個工具可選。先依<b style="color:#C9A55C;">管線分層</b>看每一層在做什麼、各有哪些選擇；再依<b style="color:#C9A55C;">品牌生態</b>看哪些其實出自同一家（LangChain、Hugging Face 各自就是一整族）。</p>
+        </div>
+
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#B6AE9D;margin:8px 0 12px;letter-spacing:.05em;">一、依管線分層 · BY LAYER</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
+          <sc-for list="{{ toolLayers }}" as="ly" hint-placeholder-count="12">
+            <div style="background:rgba(40,36,31,.42);backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.16);border-radius:12px;padding:15px 16px;">
+              <div style="font-size:14.5px;font-weight:700;color:#F4F1E8;">{{ ly.name }}</div>
+              <div style="font-size:11.5px;color:#8A857A;margin:3px 0 11px;line-height:1.5;">{{ ly.note }}</div>
+              <sc-for list="{{ ly.tools }}" as="tl" hint-placeholder-count="3">
+                <div style="margin:0 0 7px;">
+                  <span style="font-size:12.5px;font-weight:600;color:#C9A55C;">{{ tl.t }}</span>
+                  <span style="font-size:11.5px;color:#A8A496;line-height:1.55;"> — {{ tl.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#B6AE9D;margin:28px 0 12px;letter-spacing:.05em;">二、依品牌生態 · BY ECOSYSTEM</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">
+          <sc-for list="{{ toolBrands }}" as="br" hint-placeholder-count="9">
+            <div style="background:rgba(40,36,31,.42);backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.16);border-left:3px solid {{ br.color }};border-radius:12px;padding:15px 16px;">
+              <div style="font-size:15px;font-weight:700;color:#F4F1E8;">{{ br.name }}</div>
+              <div style="font-size:11.5px;color:#8A857A;margin:3px 0 11px;line-height:1.5;">{{ br.note }}</div>
+              <sc-for list="{{ br.tools }}" as="tl" hint-placeholder-count="4">
+                <div style="margin:0 0 7px;">
+                  <span style="font-size:12.5px;font-weight:600;color:#D8D3C6;">{{ tl.t }}</span>
+                  <span style="font-size:11.5px;color:#A8A496;line-height:1.55;"> — {{ tl.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
         </div>
       </div>
       </sc-if>
@@ -1482,6 +1561,10 @@ class Component extends DCLogic {
       {t:"Prompt Injection 提示注入", d:"惡意指令藏在被讀到的內容裡劫持模型(間接注入最危)。", go:"frontier-security"},
       {t:"RAGAS", d:"量 RAG 的忠實度/檢索相關性/答案相關性的指標。", go:"frontier-eval"},
       {t:"LLM-as-Judge 以模型評模型", d:"用強模型按準則替答案打分，取代人工評估。", go:"frontier-eval"},
+      {t:"k-means 分群", d:"把向量分成 k 群、各取中心點；IVF 索引就靠它先分群。", go:"deep-retrieval"},
+      {t:"JSONL", d:"JSON Lines：一行一筆 JSON；微調訓練資料的標準格式。", go:"mod-sft-0"},
+      {t:"MaaS 模型即服務", d:"Model-as-a-Service：呼叫雲端模型 API，不自管 GPU。", go:"mod-query-5"},
+      {t:"Context Window 上下文窗", d:"模型一次能讀的 token 上限；脈絡工程在管它放什麼。", go:"frontier-arag"},
     ];
 
     this.HOPS = {
@@ -1514,9 +1597,105 @@ class Component extends DCLogic {
       {node:"log",     t:"記錄",         p:"整個過程會被記下來（提問與答案各存一份），方便日後追查與改進——這也是機密最容易外洩的地方。"},
     ];
     this.sceneTabs = [
-      {id:"overview",label:"全景"},{id:"ladder",label:"適應階梯"},{id:"deep",label:"深入"},
-      {id:"agents",label:"代理"},{id:"compliance",label:"合規"},{id:"frontier",label:"前沿"},{id:"glossary",label:"詞彙"},
+      {id:"overview",label:"全景",desc:"問題如何變成帶引用的答案"},
+      {id:"ladder",label:"適應階梯",desc:"RAG／微調／預訓練三條路"},
+      {id:"deep",label:"深入",desc:"嵌入·檢索·推理服務鑽到底"},
+      {id:"tools",label:"工具庫",desc:"全部工具的分層與品牌歸類"},
+      {id:"agents",label:"代理",desc:"ReAct 迴圈·harness·MCP"},
+      {id:"compliance",label:"合規",desc:"機密資料的四個落點"},
+      {id:"frontier",label:"前沿",desc:"2026 的關鍵演化"},
+      {id:"glossary",label:"詞彙",desc:"術語與掌握度追蹤"},
     ];
+
+    // Tool taxonomy for the 工具庫 scene: same tools, two lenses — by pipeline layer, and by brand/ecosystem.
+    this.TOOLTAX = {
+      byLayer:[
+        {name:"① 文件解析・載入", note:"把原始檔變成純文字", tools:[
+          {t:"PyMuPDF", d:"從 PDF 抽文字的 Python 函式庫"},
+          {t:"Unstructured", d:"統一解析 PDF／Word／HTML 成結構化元素"},
+          {t:"Tesseract OCR", d:"把掃描影像辨識成文字"}]},
+        {name:"② 切塊 Chunking", note:"長文切成可檢索的小段", tools:[
+          {t:"LangChain Text Splitter", d:"按策略把長文切成互相重疊的塊"},
+          {t:"LlamaIndex Node Parser", d:"切成帶結構與關聯的節點"}]},
+        {name:"③ 嵌入模型 Embedding", note:"文字 → 語意向量", tools:[
+          {t:"BGE", d:"BAAI 開源中英嵌入模型，可自託管"},
+          {t:"E5 / multilingual-e5", d:"微軟開源多語嵌入模型"},
+          {t:"TEI", d:"Hugging Face 嵌入專用推理伺服器"}]},
+        {name:"④ 向量庫 Vector DB", note:"存向量＋原文，做相似度查詢", tools:[
+          {t:"Milvus", d:"可大規模擴展的開源向量庫"},
+          {t:"pgvector", d:"讓 PostgreSQL 支援向量檢索的擴充"},
+          {t:"Pinecone", d:"全託管雲端向量庫（SaaS）"}]},
+        {name:"⑤ 檢索・重排 Retrieval", note:"取回最相關片段並精排", tools:[
+          {t:"向量庫搜尋 API", d:"各向量庫內建的相似度查詢"},
+          {t:"BGE-reranker", d:"cross-encoder 重排模型，二次精排"},
+          {t:"Hybrid（BM25＋向量）", d:"關鍵字＋語意混合檢索，提高召回"}]},
+        {name:"⑥ 編排・後端 Orchestration", note:"把各步串成流程、守門", tools:[
+          {t:"LangChain", d:"把 LLM／檢索／工具串成流程的框架"},
+          {t:"FastAPI", d:"架設後端 API 的 Python 框架"},
+          {t:"Guardrails", d:"對輸入輸出加規則與護欄"}]},
+        {name:"⑦ Prompt 組裝", note:"把變數填進提示模板", tools:[
+          {t:"Prompt 模板", d:"把檢索塊與問題填入固定結構"},
+          {t:"Jinja2", d:"通用文字模板引擎"}]},
+        {name:"⑧ 推理服務 Serving", note:"真正跑模型、逐字生成", tools:[
+          {t:"vLLM", d:"高吞吐開源推理引擎（PagedAttention）"},
+          {t:"TGI", d:"Hugging Face 生產級推理伺服器"},
+          {t:"託管 MaaS", d:"雲端模型 API，免自管 GPU（SaaS）"}]},
+        {name:"⑨ 後處理・守門", note:"驗證格式、過濾敏感輸出", tools:[
+          {t:"Pydantic / Instructor", d:"確保答案符合預期結構，不合就重試"},
+          {t:"PII／安全過濾", d:"偵測並遮蔽敏感輸出"}]},
+        {name:"⑩ 可觀測・評估", note:"記錄、回放、打分", tools:[
+          {t:"Langfuse", d:"開源 LLM 可觀測平台，可自託管"},
+          {t:"LangSmith", d:"LangChain 的追蹤評估平台（SaaS）"},
+          {t:"RAGAS", d:"量 RAG 忠實度／檢索與答案相關性的指標"}]},
+        {name:"⑪ 微調 Fine-tuning", note:"用示範對改權重", tools:[
+          {t:"Transformers＋PEFT/LoRA", d:"HF 微調工具；LoRA 只訓一小層"},
+          {t:"TRL（SFTTrainer）", d:"專為監督微調設計的訓練器"},
+          {t:"axolotl / Unsloth", d:"更易用、更省記憶體的微調包裝"}]},
+        {name:"⑫ 預訓練 Pretraining", note:"海量語料重塑底層直覺", tools:[
+          {t:"Tokenizer（BPE/SentencePiece）", d:"把文字切成 token 並轉成 id"},
+          {t:"Megatron-LM", d:"NVIDIA 大規模分散式訓練框架"},
+          {t:"DeepSpeed", d:"微軟訓練優化庫，讓超大模型訓得起"}]},
+      ],
+      byBrand:[
+        {name:"LangChain 生態系", color:"#6FB89A", note:"應用編排起家；工具最雜也最齊", tools:[
+          {t:"LangChain", d:"編排框架：串接 LLM／檢索／工具"},
+          {t:"LangChain Text Splitter", d:"切塊工具"},
+          {t:"LangGraph", d:"圖式多代理／狀態機編排（同家族）"},
+          {t:"LangSmith", d:"追蹤・評估・可觀測（SaaS）"}]},
+        {name:"Hugging Face 生態系", color:"#C9A66A", note:"開源模型與訓練／推理工具的大本營", tools:[
+          {t:"Transformers", d:"載入／執行模型的核心函式庫"},
+          {t:"PEFT / LoRA", d:"參數高效微調（只訓一小層）"},
+          {t:"TRL（SFTTrainer）", d:"監督微調／偏好對齊訓練器"},
+          {t:"TGI", d:"生產級 LLM 推理伺服器"},
+          {t:"TEI", d:"嵌入專用推理伺服器"},
+          {t:"Datasets", d:"資料集載入／處理（同家族）"}]},
+        {name:"LlamaIndex", color:"#9E8FC0", note:"專注 RAG 的資料框架", tools:[
+          {t:"Node Parser", d:"把文件切成帶關聯的節點"},
+          {t:"查詢引擎／檢索器", d:"RAG 檢索與查詢編排（同家族）"}]},
+        {name:"BAAI 智源", color:"#6FB89A", note:"開源嵌入與重排模型", tools:[
+          {t:"BGE", d:"中英嵌入模型，可自託管"},
+          {t:"BGE-reranker", d:"cross-encoder 重排模型"}]},
+        {name:"Microsoft 微軟", color:"#7FA8C0", note:"嵌入與訓練優化", tools:[
+          {t:"E5 / multilingual-e5", d:"開源多語嵌入模型"},
+          {t:"DeepSpeed", d:"大規模訓練優化庫（ZeRO）"}]},
+        {name:"NVIDIA 輝達", color:"#8FBF6A", note:"大規模訓練與推理底層", tools:[
+          {t:"Megatron-LM", d:"分散式訓練框架"},
+          {t:"Triton Inference Server", d:"通用推理伺服器（同家族）"}]},
+        {name:"向量資料庫廠商", color:"#C9A55C", note:"專責『存向量・找最近鄰』", tools:[
+          {t:"Milvus（Zilliz）", d:"可大規模擴展的開源向量庫"},
+          {t:"Pinecone", d:"全託管雲端向量庫（SaaS）"},
+          {t:"pgvector", d:"PostgreSQL 的向量檢索擴充"}]},
+        {name:"高效推理引擎", color:"#C99A6B", note:"把模型架成高吞吐服務", tools:[
+          {t:"vLLM", d:"柏克萊開源引擎，PagedAttention 優化 KV cache"},
+          {t:"TGI", d:"Hugging Face 推理伺服器"},
+          {t:"託管 MaaS", d:"雲端模型 API（OpenAI 相容，SaaS）"}]},
+        {name:"獨立／通用工具", color:"#8E8676", note:"不屬單一品牌、各司其職", tools:[
+          {t:"PyMuPDF・Unstructured・Tesseract", d:"解析與 OCR"},
+          {t:"FastAPI・Jinja2", d:"後端 API 與模板"},
+          {t:"Pydantic／Instructor・Guardrails", d:"輸出結構化與護欄"},
+          {t:"Langfuse", d:"開源可觀測平台"}]},
+      ],
+    };
 
     this.NODECARD = { client:"mod-query-0", backend:"mod-query-1", embed:"mod-rag-2", llm:"mod-query-5",
       vdb:"mod-rag-3", docstore:"mod-rag-0", cache:"mod-query-5", log:"mod-query-7",
@@ -1743,7 +1922,7 @@ class Component extends DCLogic {
       "把文字變成代表語意的向量。":"Turn text into a vector that encodes meaning.","訓練時把同義拉近、異義推遠，長出嵌入空間。":"Pull synonyms together, push others apart — grows the embedding space.","把向量長度化為 1，只保留方向。":"Scale vectors to length 1, keeping only direction.","比兩向量「多同方向」的相似度量度。":"A similarity measure of how aligned two vectors are.","對應元素相乘再相加;向量正規化後等於餘弦。":"Element-wise multiply then sum; equals cosine once normalized.","用索引只比一小部分，快速找「很可能」最近的向量。":"Index so you compare only a few — quickly find the 'probably' nearest vectors.","把向量連成鄰居圖，像「朋友的朋友」幾跳到目標。":"Link vectors into a neighbor graph; hop 'friend of a friend' to the target.","先把向量分群，查詢只搜離問題最近的幾群。":"Cluster vectors first; a query only searches the nearest clusters.","用更精的模型把初步檢索結果再排序。":"Re-order the first-pass results with a finer model.","關鍵字 + 語意一起檢索，提高召回。":"Keyword + semantic retrieval together for better recall.","把長文切成可檢索的小段。":"Split long text into retrievable chunks.","一次並行讀入整個 prompt、建立 KV cache。":"Read the whole prompt in parallel, building the KV cache.","逐字生成，每個新字重用 cache。":"Generate token by token, each reusing the cache.","存已算的 key/value，生成新字只算一格、其餘重用。":"Store computed key/values; each new token computes one, reuses the rest.","模型一個 token 一個 token 地生成。":"The model generates one token at a time.","文字被切成的最小單位;模型只看 token id。":"The smallest text unit; the model only sees token ids.","思考→行動→觀察的代理閉環。":"The agent's think→act→observe loop.","模型輸出結構化請求，由 harness 執行工具。":"The model emits a structured request; the harness runs the tool.","工具接入的開放標準，工具界的「USB」。":"An open standard for connecting tools — the 'USB' of tools.","打包好的能力:提示 + 工具 + 步驟。":"A packaged capability: prompt + tools + steps.","模型外圍撐起迴圈、工具、記憶的運行框架。":"The runtime around the model holding loop, tools and memory.","凍結原權重、只訓練一小層 adapter 的便宜微調。":"Cheap fine-tuning: freeze the weights, train a small adapter.","微調訓出的小層，推理時疊在基座上。":"A small trained layer, stacked on the base at inference.","由 loss 反推、更新權重的訓練步驟。":"The training step that updates weights from the loss.","在海量語料上學「預測下一個 token」。":"Learn next-token prediction over massive corpora.","檢視機密資料的四切面:靜態/傳輸/使用與日誌/落地。":"Four lenses on sensitive data: at-rest / in-transit / in-use & logs / residency.","答前先生成一段「思考」，用推理時算力換準確度(o 系列)。":"Generate 'thinking' before the answer, trading inference compute for accuracy (o-series).","在推理時投入更多運算(思考)來提升答案品質。":"Spend more compute at inference (thinking) to improve answers.","模型自己決定何時搜、多輪檢索，取代固定管線。":"The model decides when to search, multi-round — replacing the fixed pipeline.","管理整個上下文窗放什麼(檢索/記憶/工具/歷史)。":"Manage what fills the whole context window (retrieval/memory/tools/history).","用人類排序訓獎勵模型，再對齊主模型的偏好。":"Train a reward model from human rankings, then align the main model.","跳過獎勵模型，直接從偏好對學對齊。":"Skip the reward model; align straight from preference pairs.","每個 token 只激活部分專家子網路，又大又便宜。":"Each token activates only some expert subnets — big yet cheap.","跨請求重用相同前綴的 KV cache，省掉重算 prefill。":"Reuse a shared prefix's KV cache across requests, skipping prefill.","小模型猜、大模型驗，加速生成而不改輸出。":"A small model guesses, a big one verifies — faster, same output.","主管分派、多個 worker 各司其職、互相交接。":"A supervisor delegates; workers each do a part and hand off.","短期=上下文，長期=向量記憶庫，讓 agent 記得往事。":"Short-term = context; long-term = a vector memory store, so the agent remembers.","惡意指令藏在被讀到的內容裡劫持模型(間接注入最危)。":"Malicious instructions hidden in read content hijack the model (indirect is worst).","量 RAG 的忠實度/檢索相關性/答案相關性的指標。":"Metrics for RAG faithfulness / retrieval & answer relevance.","用強模型按準則替答案打分，取代人工評估。":"Use a strong model to score answers by criteria, replacing manual eval.",
     };
     this.state = {
-      cov:{}, scene:"overview", selected:null, selNode:null, drawerOpen:false, lens:null, lang:"hant", trail:[], guide:null,
+      cov:{}, scene:"overview", selected:null, selNode:null, drawerOpen:false, sidebarOpen:false, lens:null, lang:"hant", trail:[], guide:null,
       openTools:{}, gfilter:"all", scale:1, ladderScale:1,
       playing:false, playStep:-1, activeNodes:[], activeArrow:null, capTitle:null, capData:null,
     };
@@ -1851,7 +2030,9 @@ class Component extends DCLogic {
       tickText: done?(en?"✓ Marked: got it":"✓ 已標記：懂"):(en?"○ Mark as got it":"○ 標記為已懂") };
   }
 
-  setScene(sc){ this.stopPlay(); this.setState({scene:sc, drawerOpen:false, selected:null, selNode:null, lens:null}); }
+  setScene(sc){ this.stopPlay(); this.setState({scene:sc, drawerOpen:false, sidebarOpen:false, selected:null, selNode:null, lens:null}); }
+  toggleSidebar(){ this.setState({sidebarOpen:!this.state.sidebarOpen}); }
+  closeSidebar(){ this.setState({sidebarOpen:false}); }
   setLens(id){ this.stopPlay(); this.setState({lens:id||null}); }
   setLang(l){ try{localStorage.setItem("llm-map-lang",l);}catch(e){} this.setState({lang:l}); setTimeout(()=>this._convert&&this._convert(),0); }
   openTarget(go){
@@ -1889,7 +2070,9 @@ class Component extends DCLogic {
 
   onRoot(e){ const t=e.target.closest("[data-act]"); if(!t) return;
     const act=t.getAttribute("data-act"), id=t.getAttribute("data-id");
-    if(act==="scene") this.setScene(id);
+    if(act==="sidebar") this.toggleSidebar();
+    else if(act==="sidebarClose") this.closeSidebar();
+    else if(act==="scene") this.setScene(id);
     else if(act==="node") this.openNode(id);
     else if(act==="stage") this.openStage(t.getAttribute("data-node"), t.getAttribute("data-card"));
     else if(act==="go") this.openTarget(id);
@@ -2013,6 +2196,8 @@ class Component extends DCLogic {
 
     const tabStyle=id=> sc===id?"background:linear-gradient(180deg,#CCAA63,#94702E80);color:#241a06;font-weight:700;box-shadow:0 1px 7px rgba(207,160,92,.38),inset 0 1px 0 rgba(255,244,214,.35);":"color:#A89F86;background:transparent;";
     const sceneTabs=this.sceneTabs.map(t=>({id:t.id,label:t.label,style:tabStyle(t.id)}));
+    const sideStyle=id=> sc===id?"background:linear-gradient(180deg,rgba(201,166,92,.92),rgba(148,112,46,.85));color:#241408;border:1px solid rgba(240,182,152,.5);box-shadow:inset 0 1px 0 rgba(255,240,230,.4);":"background:rgba(40,36,30,.4);color:#D8D3C6;border:1px solid rgba(222,205,160,.12);";
+    const sidebarTabs=this.sceneTabs.map((t,i)=>({id:t.id,label:t.label,desc:t.desc||"",num:(i<9?("0"+(i+1)):(""+(i+1))),style:sideStyle(t.id)}));
 
     const dwKind = !s2?"none":(s2.indexOf("deep-")===0?"deep":(s2.indexOf("frontier-")===0?"front":"mods"));
 
@@ -2021,13 +2206,15 @@ class Component extends DCLogic {
     const langBtns=[["hant","繁"],["hans","简"]].map(o=>({id:o[0],label:o[1],
       style:((this.state.lang||"hant")===o[0])?"background:linear-gradient(180deg,#CCAA63,#94702E);color:#241a06;font-weight:700;":"background:transparent;color:#A89F86;"}));
     return {
-      onRoot:(e)=>this.onRoot(e), sceneTabs, langBtns, isEn, notEn:!isEn,
+      onRoot:(e)=>this.onRoot(e), sceneTabs, sidebarTabs, sidebarOpen:this.state.sidebarOpen,
+      toolLayers:this.TOOLTAX.byLayer, toolBrands:this.TOOLTAX.byBrand,
+      langBtns, isEn, notEn:!isEn,
       guideOn:(this.state.guide!=null), guideNum:(this.state.guide!=null?this.state.guide+1:1), guideTotal:this.GUIDE.length,
       guideTitle:(this.state.guide!=null?this.GUIDE[this.state.guide].t:""), guidePlain:(this.state.guide!=null?this.GUIDE[this.state.guide].p:""),
       guidePrevOn:(this.state.guide!=null&&this.state.guide>0), guideNextLabel:(this.state.guide!=null&&this.state.guide>=this.GUIDE.length-1?"完成 ✓":"下一步 →"),
       summary:{...c,total,pct}, ringS:rs(12), ringB:rs(40),
       isOverview:sc==="overview", isLadder:sc==="ladder", isGlossary:sc==="glossary",
-      isDeep:sc==="deep", isAgents:sc==="agents", isCompliance:sc==="compliance", isFrontier:sc==="frontier",
+      isDeep:sc==="deep", isAgents:sc==="agents", isCompliance:sc==="compliance", isFrontier:sc==="frontier", isTools:sc==="tools",
       scale:this.state.scale, canvasH:Math.round(600*this.state.scale)+10,
       ladderScale:this.state.ladderScale, ladderH:Math.round(430*this.state.ladderScale)+10,
       nx, arc, ann, mkEnd, lensChips, lensAnnos,
