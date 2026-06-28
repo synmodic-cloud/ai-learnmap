@@ -894,6 +894,30 @@
           </svg>
           </div>
           <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">A 切詞（BPE）→ B 編碼器把 token 壓成向量；對比學習決定它擺在哪。索引與查詢必須用同一個模型。</p>
+          <div style="font-size:13px;color:#C7BFA8;margin:16px 0 4px;font-weight:600;">C · 同一個模型：索引（離線）與查詢（線上）必須共用</div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:0 0 6px;overflow-x:auto;">
+          <svg viewBox="0 0 560 252" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:470px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <defs><marker id="se1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A857A"/></marker></defs>
+            <text x="62" y="20" font-size="9.3" fill="#6FB89A" text-anchor="middle" font-weight="bold">① 離線・建索引</text>
+            <rect x="10" y="28" width="104" height="46" rx="5" fill="#34322D" stroke="#4A463E"/><text x="62" y="49" font-size="10.5" fill="#ECEAE1" text-anchor="middle">文件塊</text><text x="62" y="65" font-size="9" fill="#8A857A" text-anchor="middle">chunks</text>
+            <text x="62" y="120" font-size="9.3" fill="#C9A55C" text-anchor="middle" font-weight="bold">② 線上・每次提問</text>
+            <rect x="10" y="128" width="104" height="46" rx="5" fill="#34322D" stroke="#4A463E"/><text x="62" y="149" font-size="10.5" fill="#ECEAE1" text-anchor="middle">用戶問題</text><text x="62" y="165" font-size="9" fill="#8A857A" text-anchor="middle">query</text>
+            <rect x="146" y="40" width="120" height="122" rx="8" fill="#2A2620" stroke="#C9A55C"/><text x="206" y="92" font-size="12" fill="#C9A55C" text-anchor="middle" font-weight="bold">同一個</text><text x="206" y="110" font-size="12" fill="#C9A55C" text-anchor="middle" font-weight="bold">嵌入模型 E</text><text x="206" y="128" font-size="8.8" fill="#A8A496" text-anchor="middle">index＋query 共用</text>
+            <line x1="114" y1="51" x2="146" y2="72" stroke="#7A756A" marker-end="url(#se1)"/>
+            <line x1="114" y1="151" x2="146" y2="130" stroke="#7A756A" marker-end="url(#se1)"/>
+            <rect x="300" y="36" width="106" height="36" rx="5" fill="#34322D" stroke="#4A463E"/><text x="353" y="58" font-size="10" fill="#ECEAE1" text-anchor="middle">文件向量</text>
+            <rect x="300" y="130" width="106" height="36" rx="5" fill="#34322D" stroke="#4A463E"/><text x="353" y="152" font-size="10" fill="#ECEAE1" text-anchor="middle">查詢向量</text>
+            <line x1="266" y1="72" x2="300" y2="54" stroke="#7A756A" marker-end="url(#se1)"/>
+            <line x1="266" y1="130" x2="300" y2="148" stroke="#7A756A" marker-end="url(#se1)"/>
+            <rect x="436" y="62" width="114" height="78" rx="8" fill="#1B2A20" stroke="#4F7A4A"/><text x="493" y="92" font-size="10.5" fill="#CFE6C9" text-anchor="middle" font-weight="bold">同一向量空間</text><text x="493" y="110" font-size="9" fill="#9FC79A" text-anchor="middle">→ 才比得到</text><text x="493" y="124" font-size="9" fill="#9FC79A" text-anchor="middle">相似度</text>
+            <line x1="406" y1="54" x2="436" y2="86" stroke="#7A756A" marker-end="url(#se1)"/>
+            <line x1="406" y1="148" x2="436" y2="116" stroke="#7A756A" marker-end="url(#se1)"/>
+            <rect x="10" y="190" width="540" height="52" rx="6" fill="#2A1713" stroke="#8E4038"/>
+            <text x="24" y="210" font-size="10" fill="#EFB199" font-weight="bold">✗ 若 index 用模型 A、query 用模型 B：</text><text x="232" y="210" font-size="10" fill="#ECEAE1">兩套不同座標系，相似度無意義 → 檢索全錯。</text>
+            <text x="24" y="230" font-size="10" fill="#ECEAE1">所以換嵌入模型(或改維度)必須<tspan fill="#EFB199" font-weight="bold">整個重建索引(re-embed)</tspan>；連維度數也要一致。</text>
+          </svg>
+          </div>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">文件與問題都過同一個模型 E，才會落在同一個向量空間、比得到相似度——這也是 ③ 與 ⑦ 共用模型的原因。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
