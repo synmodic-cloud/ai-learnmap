@@ -842,8 +842,58 @@
           <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 14px;">意思相近的聚成一團；問題落在相關那團旁邊，最近鄰就是最該檢索的段落。</p>
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
             <p style="margin:0 0 13px;"><b style="color:#F2EFE6;font-weight:600;">一個比喻：</b>想像一個圖書館，把書擺在地板上，讓主題相近的書互相靠近。要找「跟這本相似的書」，看它旁邊就行。嵌入就是把這件事，在高維空間、對「文字的意思」做一次。</p>
-            <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">機制回顧：</b>文字 → 分詞 → 過 transformer 編碼器 → 池化 → 正規化。至於「相近」怎麼量、百萬向量怎麼快找——是下一站 <b style="color:#F2EFE6;font-weight:600;">T2</b>。</p>
+            <p style="margin:0 0 14px;"><b style="color:#F2EFE6;font-weight:600;">機制回顧：</b>文字 → 分詞 → 過 transformer 編碼器 → 池化 → 正規化。至於「相近」怎麼量、百萬向量怎麼快找——是下一站 <b style="color:#F2EFE6;font-weight:600;">T2</b>。</p>
+            <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">那「文字 → 向量」實際怎麼算？</b>分兩件事看：先把文字<b style="color:#F2EFE6;font-weight:600;">切成 token</b>，再讓<b style="color:#F2EFE6;font-weight:600;">編碼器</b>把這串 token 壓成一個向量。</p>
           </div>
+          <div style="font-size:13px;color:#C7BFA8;margin:14px 0 4px;font-weight:600;">A · 先切詞：文字 → token → id（Tokenizer，演算法 BPE / SentencePiece）</div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:0 0 6px;overflow-x:auto;">
+          <svg viewBox="0 0 560 168" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:440px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <defs><marker id="tk1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A857A"/></marker></defs>
+            <rect x="10" y="20" width="120" height="40" rx="5" fill="#2B2926" stroke="#4A463E"/><text x="70" y="44" font-size="11" fill="#ECEAE1" text-anchor="middle">大額現金交易申報</text>
+            <line x1="130" y1="40" x2="150" y2="40" stroke="#7A756A" marker-end="url(#tk1)"/>
+            <rect x="150" y="16" width="120" height="48" rx="6" fill="#2A2620" stroke="#C9A55C"/><text x="210" y="36" font-size="10.5" fill="#C9A55C" text-anchor="middle" font-weight="bold">Tokenizer</text><text x="210" y="52" font-size="9" fill="#A8A496" text-anchor="middle">BPE／SentencePiece</text>
+            <line x1="270" y1="40" x2="290" y2="40" stroke="#7A756A" marker-end="url(#tk1)"/>
+            <text x="430" y="14" font-size="9.3" fill="#8A857A" text-anchor="middle">切成 token → 查表成 id（模型只看 id）</text>
+            <g font-size="10.5" text-anchor="middle">
+              <rect x="292" y="22" width="56" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><text x="320" y="37" fill="#ECEAE1">大額</text>
+              <rect x="352" y="22" width="56" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><text x="380" y="37" fill="#ECEAE1">現金</text>
+              <rect x="412" y="22" width="56" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><text x="440" y="37" fill="#ECEAE1">交易</text>
+              <rect x="472" y="22" width="56" height="22" rx="3" fill="#34322D" stroke="#4A463E"/><text x="500" y="37" fill="#ECEAE1">申報</text>
+              <text x="320" y="60" font-size="10" fill="#C9A55C">1234</text><text x="380" y="60" font-size="10" fill="#C9A55C">5678</text><text x="440" y="60" font-size="10" fill="#C9A55C">90</text><text x="500" y="60" font-size="10" fill="#C9A55C">442</text>
+            </g>
+            <rect x="10" y="86" width="540" height="66" rx="5" fill="#201E1B" stroke="#3C3933"/>
+            <text x="24" y="106" font-size="10" fill="#ECEAE1"><tspan fill="#C9A55C" font-weight="bold">建表(離線一次)：</tspan>從字元開始，反覆把「最常相鄰的一對」合併成新單位，直到湊滿詞表 vocab size(常 5 萬~15 萬)。</text>
+            <text x="24" y="126" font-size="10" fill="#ECEAE1"><tspan fill="#C9A55C" font-weight="bold">結果：</tspan>常見詞 = 1 個 token；罕見詞 = 拆成幾個子詞(subword)。中文常 1~2 字一個 token。</text>
+            <text x="24" y="144" font-size="10" fill="#8A857A">token 不是固定對應「字」或「詞」，是統計學出來的子詞單位；token 數 = 序列長度（計費與長度上限都按它）。</text>
+          </svg>
+          </div>
+          <div style="font-size:13px;color:#C7BFA8;margin:14px 0 4px;font-weight:600;">B · 再編碼：token → 一個向量（transformer 編碼器），靠對比學習擺位</div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:0 0 6px;overflow-x:auto;">
+          <svg viewBox="0 0 560 206" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:460px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <defs><marker id="em1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A857A"/></marker></defs>
+            <g text-anchor="middle">
+              <rect x="6" y="36" width="82" height="50" rx="5" fill="#2B2926" stroke="#4A463E"/><text x="47" y="57" font-size="10" fill="#ECEAE1">文字</text><text x="47" y="73" font-size="8.6" fill="#8A857A">大額現金…</text>
+              <rect x="96" y="36" width="82" height="50" rx="5" fill="#34322D" stroke="#4A463E"/><text x="137" y="57" font-size="10" fill="#ECEAE1">① 分詞</text><text x="137" y="73" font-size="8.6" fill="#8A857A">→ tokens</text>
+              <rect x="186" y="36" width="86" height="50" rx="5" fill="#34322D" stroke="#4A463E"/><text x="229" y="57" font-size="10" fill="#ECEAE1">② transformer</text><text x="229" y="73" font-size="8.6" fill="#8A857A">編碼器</text>
+              <rect x="280" y="36" width="82" height="50" rx="5" fill="#34322D" stroke="#4A463E"/><text x="321" y="57" font-size="10" fill="#ECEAE1">③ 池化</text><text x="321" y="73" font-size="8.6" fill="#8A857A">mean/CLS</text>
+              <rect x="370" y="36" width="82" height="50" rx="5" fill="#34322D" stroke="#4A463E"/><text x="411" y="57" font-size="10" fill="#ECEAE1">④ 正規化</text><text x="411" y="73" font-size="8.6" fill="#8A857A">長度 = 1</text>
+              <rect x="460" y="36" width="94" height="50" rx="5" fill="#2A2620" stroke="#C9A55C"/><text x="507" y="57" font-size="10" fill="#C9A55C" font-weight="bold">向量</text><text x="507" y="73" font-size="8.4" fill="#A8A496">[0.01,-0.03,…]</text>
+            </g>
+            <g stroke="#7A756A"><line x1="88" y1="61" x2="96" y2="61" marker-end="url(#em1)"/><line x1="178" y1="61" x2="186" y2="61" marker-end="url(#em1)"/><line x1="272" y1="61" x2="280" y2="61" marker-end="url(#em1)"/><line x1="362" y1="61" x2="370" y2="61" marker-end="url(#em1)"/><line x1="452" y1="61" x2="460" y2="61" marker-end="url(#em1)"/></g>
+            <text x="229" y="100" font-size="8.6" fill="#8A857A" text-anchor="middle">每 token 一個向量</text><text x="321" y="100" font-size="8.6" fill="#8A857A" text-anchor="middle">壓成一個句向量</text>
+            <rect x="6" y="116" width="548" height="82" rx="6" fill="#201E1B" stroke="#3C3933"/>
+            <text x="20" y="135" font-size="10.5" fill="#C9A55C" font-weight="bold">怎麼學會「近 = 相關」？對比學習 (contrastive learning)</text>
+            <circle cx="70" cy="168" r="6" fill="#8AA06A"/><text x="70" y="190" font-size="9" fill="#A8A496" text-anchor="middle">句 A</text>
+            <circle cx="120" cy="160" r="6" fill="#8AA06A"/><text x="120" y="190" font-size="9" fill="#A8A496" text-anchor="middle">相關句</text>
+            <line x1="78" y1="166" x2="112" y2="161" stroke="#8AA06A" marker-end="url(#em1)"/><text x="95" y="150" font-size="8.6" fill="#8AA06A" text-anchor="middle">拉近</text>
+            <circle cx="250" cy="178" r="6" fill="#C25A4E"/><text x="250" y="194" font-size="9" fill="#A8A496" text-anchor="middle">不相關句</text>
+            <line x1="78" y1="170" x2="240" y2="178" stroke="#C25A4E" stroke-dasharray="4 3" marker-end="url(#em1)"/><text x="175" y="172" font-size="8.6" fill="#C25A4E" text-anchor="middle">推遠</text>
+            <text x="320" y="158" font-size="10" fill="#ECEAE1">餵大量「相關對／不相關對」，</text>
+            <text x="320" y="174" font-size="10" fill="#ECEAE1">訓練模型把相關的拉近、不相關推遠；</text>
+            <text x="320" y="190" font-size="10" fill="#ECEAE1">幾百萬次後，長出「近 = 相關」的座標系。</text>
+          </svg>
+          </div>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 0;">A 切詞（BPE）→ B 編碼器把 token 壓成向量；對比學習決定它擺在哪。索引與查詢必須用同一個模型。</p>
           </sc-if>
           <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
