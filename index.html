@@ -428,6 +428,12 @@
             <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">誰主動、誰被動、誰跟誰說話——把調用與流轉一次看清。</p>
             <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
           </div>
+          <div data-act="go" data-id="deep-kv" style="cursor:pointer;background:linear-gradient(160deg,rgba(50,46,40,.46),rgba(38,35,30,.4));backdrop-filter:blur(13px) saturate(1.2);-webkit-backdrop-filter:blur(13px) saturate(1.2);border:1px solid rgba(222,205,160,.18);border-radius:13px;padding:20px;transition:all .18s;">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1A1916;background:#C9A55C;border-radius:4px;padding:2px 9px;">T5</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#8A857A;">KV cache</span></div>
+            <div style="font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#F4F1E8;line-height:1.4;">KV cache：一張完整流程圖</div>
+            <p style="font-size:12.5px;color:#B6AE9D;line-height:1.7;margin:9px 0 0;">prefill → 吐首字 → decode 迴圈 → 停止，一頁看懂整條生成流程。</p>
+            <div style="margin-top:14px;font-size:12px;color:#C9A55C;">細讀 →</div>
+          </div>
         </div>
       </div>
       </sc-if>
@@ -1159,6 +1165,53 @@ unrelated d2 = [-0.7, 0.1,  0.7]   q·d2 = -.42+.08+.00 = -0.34  ← low (opposi
           </div>
           <span data-act="tick" data-id="deep-flow" style="display:inline-block;margin-top:15px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.deepFlow.style }}">{{ tk.deepFlow.text }}</span>
           </sc-if>
+
+          <!-- DEEP kv-cache: full flowchart -->
+          <sc-if value="{{ dwDeepKv }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
+            <p style="margin:0 0 12px;"><b style="color:#F2EFE6;font-weight:600;">一頁看懂。</b>一次生成分兩段：<b style="color:#C9A55C;">prefill</b> 把整段 prompt 並行算好、填滿 <b style="color:#C9A55C;">KV cache</b> 並吐出第一個字；之後進入 <b style="color:#C9A55C;">decode 迴圈</b>，每次只算一個新字、把它的 K/V 接進 cache，直到遇到停止符。</p>
+          </div>
+          <div style="background:rgba(36,32,27,.4);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);border:1px solid rgba(222,205,160,.14);border-radius:6px;padding:12px;margin:6px 0;overflow-x:auto;">
+          <svg viewBox="0 0 560 616" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:470px;display:block;" font-family="'Noto Sans TC',sans-serif">
+            <defs><marker id="kv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A857A"/></marker></defs>
+            <rect x="110" y="16" width="300" height="40" rx="6" fill="#2B2926" stroke="#4A463E"/><text x="260" y="41" font-size="11.5" fill="#ECEAE1" text-anchor="middle">輸入 Prompt：t1 t2 t3 … t_N（N 個 token）</text>
+            <line x1="260" y1="56" x2="260" y2="74" stroke="#7A756A" marker-end="url(#kv)"/>
+            <rect x="80" y="74" width="360" height="78" rx="8" fill="#2A2620" stroke="#C9A55C"/>
+            <text x="96" y="95" font-size="12" fill="#C9A55C" font-weight="bold">① PREFILL 預填充（一次並行）</text>
+            <text x="96" y="116" font-size="11" fill="#ECEAE1">N 個 token 一起跑過每一層 → 各算出 K、V</text>
+            <text x="96" y="136" font-size="11" fill="#ECEAE1">全部寫入 KV cache（一次填滿 N 格）</text>
+            <text x="450" y="104" font-size="9" fill="#8FAE7A">● 並行</text><text x="450" y="118" font-size="9" fill="#A8A496">compute-bound</text><text x="450" y="132" font-size="9" fill="#A8A496">成本∝prompt 長</text>
+            <line x1="260" y1="152" x2="260" y2="170" stroke="#7A756A" marker-end="url(#kv)"/>
+            <text x="120" y="186" font-size="9.5" fill="#8A857A">KV cache 現況：</text>
+            <rect x="206" y="174" width="22" height="18" rx="3" fill="#6E5A48"/><rect x="232" y="174" width="22" height="18" rx="3" fill="#6E5A48"/><rect x="258" y="174" width="22" height="18" rx="3" fill="#6E5A48"/><rect x="284" y="174" width="22" height="18" rx="3" fill="#6E5A48"/><rect x="310" y="174" width="22" height="18" rx="3" fill="#6E5A48"/>
+            <line x1="260" y1="192" x2="260" y2="210" stroke="#7A756A" marker-end="url(#kv)"/>
+            <rect x="150" y="210" width="220" height="34" rx="5" fill="#34322D" stroke="#4A463E"/><text x="260" y="231" font-size="11" fill="#ECEAE1" text-anchor="middle">→ 吐出第 1 個輸出 token</text>
+            <line x1="260" y1="244" x2="260" y2="262" stroke="#7A756A" marker-end="url(#kv)"/>
+            <rect x="70" y="262" width="380" height="158" rx="8" fill="#231F1A" stroke="#C9A55C" stroke-dasharray="6 4"/>
+            <text x="86" y="284" font-size="12" fill="#C9A55C" font-weight="bold">② DECODE 解碼（逐字、迴圈）</text>
+            <text x="90" y="306" font-size="11" fill="#ECEAE1">1. 取剛生成的『那 1 個』token</text>
+            <text x="90" y="326" font-size="11" fill="#ECEAE1">2. 只算它的 Q / K / V</text>
+            <text x="90" y="346" font-size="11" fill="#ECEAE1">3. 它的 Q 跟 cache 裡所有 K 比 → softmax 權重</text>
+            <text x="90" y="366" font-size="11" fill="#ECEAE1">4. 加權取各 V → 輸出向量 → 預測下一字</text>
+            <text x="90" y="386" font-size="11" fill="#ECEAE1">5. 把新的 K / V <tspan fill="#C9A55C" font-weight="bold">append 進 cache</tspan>（cache +1 格）</text>
+            <text x="90" y="408" font-size="9.3" fill="#C25A4E">● 逐字序列 · memory-bound → 慢 · 成本∝答案長度</text>
+            <line x1="260" y1="420" x2="260" y2="438" stroke="#7A756A" marker-end="url(#kv)"/>
+            <rect x="178" y="438" width="164" height="42" rx="8" fill="#2B2926" stroke="#4A463E"/><text x="260" y="464" font-size="11" fill="#ECEAE1" text-anchor="middle">遇到停止符 (EOS)?</text>
+            <path d="M178,459 L44,459 L44,341 L70,341" fill="none" stroke="#C9A55C" stroke-dasharray="5 3" marker-end="url(#kv)"/>
+            <text x="50" y="405" font-size="9.3" fill="#C9A55C">否</text><text x="50" y="419" font-size="9" fill="#A8A496">再生成</text><text x="50" y="431" font-size="9" fill="#A8A496">下一字 ↺</text>
+            <line x1="260" y1="480" x2="260" y2="498" stroke="#7A756A" marker-end="url(#kv)"/><text x="270" y="494" font-size="9.3" fill="#7FAE7A">是</text>
+            <rect x="150" y="498" width="220" height="38" rx="6" fill="#22291F" stroke="#4F7A4A"/><text x="260" y="522" font-size="11" fill="#CFE6C9" text-anchor="middle">完整答案（所有輸出 token）</text>
+            <rect x="40" y="550" width="480" height="56" rx="6" fill="#201E1B" stroke="#3C3933"/>
+            <text x="54" y="571" font-size="10.3" fill="#C25A4E" font-weight="bold">沒 cache：</text><text x="110" y="571" font-size="10.3" fill="#ECEAE1">每步把前面全部 K/V 重算 → O(n²)，越長越慢</text>
+            <text x="54" y="592" font-size="10.3" fill="#7FAE7A" font-weight="bold">有 cache：</text><text x="110" y="592" font-size="10.3" fill="#ECEAE1">每步只算 1 格、其餘讀 cache → 近線性（代價：吃 GPU 記憶體）</text>
+          </svg>
+          </div>
+          <p style="font-size:12px;color:#B6AE9D;text-align:center;margin:6px 0 13px;">EOS＝End-of-Sequence(序列結束符)。prefill 一次填滿、decode 每輪只長一格，直到 EOS。</p>
+          <div style="font-size:14.5px;color:#D8D4C8;line-height:1.85;">
+            <p style="margin:0;"><b style="color:#F2EFE6;font-weight:600;">一句話收束。</b>KV cache 是「拿 GPU 記憶體換掉重算」：把每個 token 的 K/V 存著，讓 decode 從 O(n²) 降到近線性。想看 Q/K/V 怎麼算、cache 如何一格一格長大，見 <span data-act="go" data-id="deep-infer" style="color:#C9A55C;cursor:pointer;border-bottom:1px solid #7a5340;font-weight:600;">T3 推理服務</span>。</p>
+          </div>
+          <span data-act="tick" data-id="deep-kv" style="display:inline-block;margin-top:15px;font-size:12px;cursor:pointer;padding:6px 15px;border-radius:14px;{{ tk.deepKv.style }}">{{ tk.deepKv.text }}</span>
+          </sc-if>
           <!-- FRONTIER reason -->
           <sc-if value="{{ dwFrontReason }}" hint-placeholder-val="{{ false }}">
           <sc-if value="{{ notEn }}" hint-placeholder-val="{{ true }}">
@@ -1714,7 +1767,7 @@ class Component extends DCLogic {
       {t:"切塊 Chunking", d:"把長文切成可檢索的小段。", go:"mod-rag-1"},
       {t:"Prefill 預填充", d:"一次並行讀入整個 prompt、建立 KV cache。", go:"deep-infer"},
       {t:"Decode 解碼", d:"逐字生成，每個新字重用 cache。", go:"deep-infer"},
-      {t:"KV cache", d:"存已算的 key/value，生成新字只算一格、其餘重用。", go:"deep-infer"},
+      {t:"KV cache", d:"Key/Value cache(鍵值快取)：存已算的 K/V，生成新字只算一格、其餘重用。", go:"deep-kv"},
       {t:"自迴歸 Autoregressive", d:"模型一個 token 一個 token 地生成。", go:"deep-infer"},
       {t:"token", d:"文字被切成的最小單位;模型只看 token id。", go:"mod-pretrain-0"},
       {t:"ReAct 迴圈", d:"思考→行動→觀察的代理閉環。", go:"sec-agents"},
@@ -2330,7 +2383,7 @@ class Component extends DCLogic {
     const tickFor=id=>{ const done=this.cardDone(id,cov); const en=(this.state.lang==="en");
       return done?{style:"background:#4F7A4A;border:1px solid #4F7A4A;color:#fff;",text:(en?"✓ Marked: got it":"✓ 已標記：懂")}
                  :{style:"border:1px solid #4A463E;color:#A8A496;",text:(en?"○ Mark as got it":"○ 標記為已懂")}; };
-    const tk={ deepEmbed:tickFor("deep-embed"), deepRetrieval:tickFor("deep-retrieval"), deepInfer:tickFor("deep-infer"), deepFlow:tickFor("deep-flow"),
+    const tk={ deepEmbed:tickFor("deep-embed"), deepRetrieval:tickFor("deep-retrieval"), deepInfer:tickFor("deep-infer"), deepFlow:tickFor("deep-flow"), deepKv:tickFor("deep-kv"),
       agents:tickFor("sec-agents"), comp:tickFor("sec-compliance"),
       fReason:tickFor("frontier-reason"), fArag:tickFor("frontier-arag"), fPref:tickFor("frontier-pref"),
       fMoe:tickFor("frontier-moe"), fInfra:tickFor("frontier-infra"), fMulti:tickFor("frontier-multiagent"),
@@ -2349,6 +2402,7 @@ class Component extends DCLogic {
       "deep-retrieval":["檢索：相近怎麼量、百萬條怎麼快找","Retrieval 深入 · T2"],
       "deep-infer":["推理服務：逐字生成與 KV cache","LLM Serving 深入 · T3"],
       "deep-flow":["一次提問：後端 × 向量庫 × MaaS 怎麼分工","Who calls whom · T4"],
+      "deep-kv":["KV cache：一張完整流程圖","prefill → decode → stop · T5"],
       "frontier-reason":["推理模型 / 推理時運算","Reasoning · Test-time compute"],
       "frontier-arag":["代理式檢索 + 脈絡工程","Agentic RAG · Context Engineering"],
       "frontier-pref":["偏好微調：RLHF / DPO","Preference Tuning"],
@@ -2416,7 +2470,7 @@ class Component extends DCLogic {
       capTitle:this.state.capTitle||"", capEl: capData?this.preElDark(isEn?(capData.dEn||capData.d):capData.d):null,
       drawerOpen:this.state.drawerOpen, drawerX:this.state.drawerOpen?"0":"100%",
       dwKind, dwMods, dwRelated, dwBack, dwNext, dwTitle, dwSub, dwTag, dwTagBg,
-      dwDeepEmbed:s2==="deep-embed", dwDeepRetrieval:s2==="deep-retrieval", dwDeepInfer:s2==="deep-infer", dwDeepFlow:s2==="deep-flow",
+      dwDeepEmbed:s2==="deep-embed", dwDeepRetrieval:s2==="deep-retrieval", dwDeepInfer:s2==="deep-infer", dwDeepFlow:s2==="deep-flow", dwDeepKv:s2==="deep-kv",
       dwFrontReason:s2==="frontier-reason", dwFrontArag:s2==="frontier-arag", dwFrontPref:s2==="frontier-pref",
       dwFrontMoe:s2==="frontier-moe", dwFrontInfra:s2==="frontier-infra", dwFrontMulti:s2==="frontier-multiagent",
       dwFrontSec:s2==="frontier-security", dwFrontEval:s2==="frontier-eval",
